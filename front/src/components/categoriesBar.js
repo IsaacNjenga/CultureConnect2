@@ -3,6 +3,22 @@ import "../assests/css/dashboard.css";
 import { Link } from "react-router-dom";
 
 function CategoriesBar() {
+  const categories = [
+    "Food & Cuisine",
+    "Clothing & Fashion",
+    "Music & Dance",
+    "Languages & Culture",
+    "Festivals & Holidays",
+    "Arts & Handicrafts",
+    "Literature & Poetry",
+    "Customs & Traditions",
+    "Religious Practices & Beliefs",
+    "Sports & Games",
+    "Architecture & Design",
+    "Films & Theatre",
+    "Folk Tales & Legends",
+    "Etiquette & Social Norms",
+  ];
   return (
     <div>
       <div>
@@ -21,21 +37,17 @@ function CategoriesBar() {
           Explore the richness of diverse cultures by selecting a topic below
           and start your journey of discovery!
         </h3>
-        <ul>
-          <li>Food & Cuisine</li>
-          <li>Clothing & Fashion</li>
-          <li>Music & Dance</li>
-          <li>Languages & Culture</li>
-          <li>Festivals & Holidays</li>
-          <li>Arts & Handicrafts</li>
-          <li>Literature & Poetry</li>
-          <li>Customs & Traditions</li>
-          <li>Religious Practices & Beliefs</li>
-          <li>Sports & Games</li>
-          <li>Architecture & Design</li>
-          <li>Films & Theatre</li>
-          <li>Folk Tales & Legends</li>
-          <li>Etiquette & Social Norms</li>
+        <ul className="ul">
+          {categories.map((category, index) => (
+            <li key={index} className="li">
+              <Link
+                to={`/category/${encodeURIComponent(category)}`}
+                className="li"
+              >
+                {category}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

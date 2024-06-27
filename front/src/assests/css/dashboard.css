@@ -7,7 +7,7 @@
   background-size: cover;
 }
 
-ul {
+.ul {
   list-style: none; /* Remove default list styling */
   padding: 0; /* Remove default padding */
   margin: 0; /* Remove default margin */
@@ -16,7 +16,7 @@ ul {
   justify-content: center; /* Center items */
 }
 
-li,
+.li,
 .start-convo-btn {
   background-color: #8d363162; /* Light background color */
   color: #ffffff; /* Dark text color */
@@ -27,16 +27,17 @@ li,
   cursor: pointer; /* Pointer cursor on hover */
   font-family: "Arial", sans-serif; /* Font style */
   font-size: 16px; /* Font size */
+  text-decoration: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
 
-li:hover {
+.li:hover {
   background-color: #e0f0ff; /* Slightly different background on hover */
   transform: translateY(-5px); /* Lift item on hover */
   color: black;
 }
 
-li:active {
+.li:active {
   background-color: #d0e8ff; /* Different background on active */
   transform: translateY(-2px); /* Less lift on active */
 }
