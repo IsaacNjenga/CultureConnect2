@@ -15,6 +15,7 @@ import About from "./pages/About";
 import Conversation from "./pages/Conversation";
 import AddConversation from "./components/addConversation";
 import UpdateConversation from "./components/updateConversation";
+import MyConversations from "./components/myConversations";
 
 export const UserContext = createContext(null);
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
   { path: "/conversation", element: <Conversation /> },
   { path: "/add-conversation", element: <AddConversation /> },
   { path: "/update-conversation/:id", element: <UpdateConversation /> },
+  { path: "/my-conversations", element: <MyConversations /> },
   { path: "/logout", element: <Logout /> },
   { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },

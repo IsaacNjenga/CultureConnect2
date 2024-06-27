@@ -13,7 +13,7 @@ function CategoriesBar() {
           <Link to="/conversation" className="start-convo-link">
             View posts
           </Link>
-          <Link to="/conversation" className="start-convo-link">
+          <Link to="/my-conversations" className="start-convo-link">
             View My Posts
           </Link>
         </div>

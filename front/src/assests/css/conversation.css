@@ -97,3 +97,31 @@
   margin-left: 10px;
   cursor: pointer;
 }
+
+.no-conversations {
+  font-size: 24px;
+  color: #d4c5c5;
+  text-align: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("empty.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.no-conversations a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.no-conversations a:hover {
+  text-decoration: underline;
+}
