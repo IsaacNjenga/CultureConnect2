@@ -9,10 +9,10 @@ function Home() {
       <div className="home">
         <h1 className="home-title">CultureConnect</h1>
         <p className="home-description">
-          "Bridging Cultures, Connecting Hearts"
+          Bridging Cultures, Connecting Hearts
         </p>
         <p className="home-description2">
-          Start a <Link to="/dashboard">Converasation</Link>
+          Start a <Link to="/dashboard">Conversation</Link>
         </p>
       </div>
     </>

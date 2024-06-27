@@ -11,6 +11,7 @@ import axios from "axios";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
 import ProtectedRoutes from "./components/protectedRoutes";
+import About from "./pages/About";
 
 export const UserContext = createContext(null);
 
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
     ),
   },
   { path: "/logout", element: <Logout /> },
+  { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },
 ]);
 function App() {

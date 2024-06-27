@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../assests/css/navbar.css";
 
+import { UserContext } from "../App";
 function Navbar() {
+  const { user } = useContext(UserContext);
   return (
     <div className="navbar">
       <div className="navbar-left">
@@ -12,18 +14,28 @@ function Navbar() {
         <Link to="/about" className="navbar-link">
           About
         </Link>
-        <Link to="/dashboard" className="navbar-link">
-          Dashboard
-        </Link>
-        <Link to="/register" className="navbar-link">
-          Register
-        </Link>
-        <Link to="/login" className="navbar-link">
-          Login
-        </Link>
-        <Link to="/logout" className="navbar-link">
-          Logout
-        </Link>
+        {user ? (
+          <>
+            <Link to="/login" className="navbar-link">
+              {user.name}
+            </Link>
+            <Link to="/dashboard" className="navbar-link">
+              Dashboard
+            </Link>
+            <Link to="/logout" className="navbar-link">
+              Logout
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link to="/register" className="navbar-link">
+              Register
+            </Link>
+            <Link to="/login" className="navbar-link">
+              Login
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

@@ -6,3 +6,69 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+ul {
+  list-style: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+  display: flex; /* Flexbox for layout */
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: center; /* Center items */
+}
+
+li,
+.start-convo-btn {
+  background-color: #8d363162; /* Light background color */
+  color: #ffffff; /* Dark text color */
+  padding: 15px 20px; /* Add padding */
+  margin: 10px; /* Add margin */
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-family: "Arial", sans-serif; /* Font style */
+  font-size: 16px; /* Font size */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
+
+li:hover {
+  background-color: #e0f0ff; /* Slightly different background on hover */
+  transform: translateY(-5px); /* Lift item on hover */
+  color: black;
+}
+
+li:active {
+  background-color: #d0e8ff; /* Different background on active */
+  transform: translateY(-2px); /* Less lift on active */
+}
+
+.dashboard-p {
+  color: #fff;
+  padding: 5% 0 3%;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* Center the text */
+  text-align: center; /* Center text alignment */
+  font-size: 2.5rem; /* Increase font size */
+  font-family: "Arial", sans-serif; /* Set font family */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.start-convo-btn {
+  font-size: 16px; /* Set a font size */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  color: white; /* Button text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s; /* Smooth transition */
+}
+
+.start-convo-btn:hover {
+  background-color: #0056b3; /* Darker background on hover */
+}
