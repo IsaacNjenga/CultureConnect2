@@ -6,6 +6,7 @@ const ConversationSchema = new mongoose.Schema(
     title: { type: String, require: true },
     thoughts: { type: String, require: true },
     image: { type: String },
+    author: { type: String, require: true },
   },
   { collection: "conversations" }
 );

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import "../assests/css/conversation.css";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { UserContext } from "../App";
 
 function AddConversation() {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const [image, setImage] = useState("");
   const [values, setValues] = useState({});
 
@@ -15,7 +17,7 @@ function AddConversation() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const valueData = { ...values, image: image };
+    const valueData = { ...values, author: user.name, image: image };
     axios
       .post("addConversation", valueData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -26,7 +28,7 @@ function AddConversation() {
             position: "top-right",
             autoClose: 500,
           });
-          navigate("/dashboard");
+          navigate("/conversation");
         }
       })
       .catch((err) => {
@@ -108,6 +110,8 @@ function AddConversation() {
             type="file"
             onChange={convertToBase64}
           />
+          <label htmlFor="author">Author: {user.name}</label>
+
           <div className="button-container">
             <button className="submit-button" type="submit">
               Post

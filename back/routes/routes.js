@@ -6,6 +6,9 @@ import { VerifyUser } from "../middleware/verifyUser.js";
 import {
   addConversation,
   getConversations,
+  getConversation,
+  deleteConversation,
+  updateConversation,
 } from "../controllers/conversationController.js";
 
 router.post(
@@ -55,4 +58,7 @@ router.get("/verify", VerifyUser, Auth);
 //conversation Routes
 router.post("/addConversation", VerifyUser, addConversation);
 router.get("/conversations", VerifyUser, getConversations);
+router.get("/conversation/:id", VerifyUser, getConversation);
+router.put("/update-conversation/:id", VerifyUser, updateConversation);
+router.delete("/conversation/:id", VerifyUser, deleteConversation);
 export { router as Router };

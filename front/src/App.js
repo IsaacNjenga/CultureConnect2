@@ -35,7 +35,7 @@ const router = createBrowserRouter([
   },
   { path: "/conversation", element: <Conversation /> },
   { path: "/add-conversation", element: <AddConversation /> },
-  { path: "/edit-conversation/:id", element: <UpdateConversation /> },
+  { path: "/update-conversation/:id", element: <UpdateConversation /> },
   { path: "/logout", element: <Logout /> },
   { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },

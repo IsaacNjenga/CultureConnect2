@@ -13,6 +13,9 @@ function CategoriesBar() {
           <Link to="/conversation" className="start-convo-link">
             View posts
           </Link>
+          <Link to="/conversation" className="start-convo-link">
+            View My Posts
+          </Link>
         </div>
         <h3 className="dashboard-p">
           Explore the richness of diverse cultures by selecting a topic below

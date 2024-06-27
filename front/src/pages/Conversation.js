@@ -6,6 +6,10 @@ import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../assests/css/conversation.css";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+
+const MySwal = withReactContent(Swal);
 
 const customStyles = {
   headCells: { style: { fontSize: "15px", fontWeight: 600 } },
@@ -38,7 +42,39 @@ const Conversation = () => {
   }, []);
 
   const handleDelete = (id) => {
-    //to implement delete logic
+    MySwal.fire({
+      title: "Are you sure you want to delete this?",
+      text: "You wont be able to revert this action!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`conversation/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((res) => {
+            setConversations(res.data.conversations);
+            MySwal.fire({
+              title: "Deleted!",
+              text: "Deleted successfully",
+              icon: "success",
+            });
+          })
+          .catch((err) => {
+            MySwal.fire({
+              title: "Error!",
+              text: "An error occured",
+              icon: "error",
+            });
+          });
+      }
+    });
   };
 
   const columns = [
@@ -47,7 +83,7 @@ const Conversation = () => {
       selector: (row) => (
         <img
           src={row.image}
-          alt="Conversation"
+          alt="Conversation_image"
           className="conversation-image"
         />
       ),
@@ -55,16 +91,17 @@ const Conversation = () => {
     { name: "Title", selector: (row) => row.title },
     { name: "Category", selector: (row) => row.category },
     { name: "Thoughts", selector: (row) => row.thoughts },
+    { name: "Author", selector: (row) => row.author },
     {
       name: "Action",
       cell: (row) => (
         <>
-          <Link to={`/edit-conversation/${row.id}`}>
+          <Link to={`/update-conversation/${row._id}`}>
             <FaPenToSquare className="table-icon" />
           </Link>
           <FaRegTrashCan
             className="table-icon"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row._id)}
           />
         </>
       ),
