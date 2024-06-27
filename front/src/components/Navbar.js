@@ -8,7 +8,9 @@ function Navbar() {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <Link className="navbar-brand">CultureConnect</Link>
+        <Link to="/" className="navbar-brand">
+          CultureConnect
+        </Link>
       </div>
       <div className="navbar-right">
         <Link to="/about" className="navbar-link">

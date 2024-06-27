@@ -3,6 +3,10 @@ import { Register, Login, Auth } from "../controllers/userController.js";
 const router = express.Router();
 import { body } from "express-validator";
 import { VerifyUser } from "../middleware/verifyUser.js";
+import {
+  addConversation,
+  getConversations,
+} from "../controllers/conversationController.js";
 
 router.post(
   "/register",
@@ -48,4 +52,7 @@ router.post(
 
 router.get("/verify", VerifyUser, Auth);
 
+//conversation Routes
+router.post("/addConversation", VerifyUser, addConversation);
+router.get("/conversations", VerifyUser, getConversations);
 export { router as Router };

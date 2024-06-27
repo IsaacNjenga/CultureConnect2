@@ -56,19 +56,22 @@ li:active {
 
 .button-container {
   display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  justify-content: center;
+  margin: 20px 0;
 }
 
-.start-convo-btn {
-  font-size: 16px; /* Set a font size */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  color: white; /* Button text color */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s; /* Smooth transition */
+.start-convo-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  text-align: center;
 }
 
-.start-convo-btn:hover {
-  background-color: #0056b3; /* Darker background on hover */
+.start-convo-link:hover {
+  background-color: #0056b3;
 }

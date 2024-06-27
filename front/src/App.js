@@ -12,6 +12,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { createContext, useEffect, useState } from "react";
 import ProtectedRoutes from "./components/protectedRoutes";
 import About from "./pages/About";
+import Conversation from "./pages/Conversation";
+import AddConversation from "./components/addConversation";
+import UpdateConversation from "./components/updateConversation";
 
 export const UserContext = createContext(null);
 
@@ -30,6 +33,9 @@ const router = createBrowserRouter([
       </ProtectedRoutes>
     ),
   },
+  { path: "/conversation", element: <Conversation /> },
+  { path: "/add-conversation", element: <AddConversation /> },
+  { path: "/edit-conversation/:id", element: <UpdateConversation /> },
   { path: "/logout", element: <Logout /> },
   { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },
