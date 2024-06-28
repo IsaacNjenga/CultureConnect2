@@ -91,7 +91,7 @@ function Category() {
     { name: "Thoughts", selector: (row) => row.thoughts },
     { name: "Author", selector: (row) => row.author },
     {
-      name: "Action",
+      name: "",
       cell: (row) =>
         user.name === row.author ? (
           <>

@@ -9,6 +9,8 @@ import {
   getConversation,
   deleteConversation,
   updateConversation,
+  createComment,
+  getComments,
 } from "../controllers/conversationController.js";
 
 router.post(
@@ -61,5 +63,7 @@ router.get("/conversations", VerifyUser, getConversations);
 router.get("/conversation/:id", VerifyUser, getConversation);
 router.put("/update-conversation/:id", VerifyUser, updateConversation);
 router.delete("/conversation/:id", VerifyUser, deleteConversation);
+router.post("/comments", VerifyUser, createComment);
+router.get("/comments/:conversationId", VerifyUser, getComments);
 
 export { router as Router };

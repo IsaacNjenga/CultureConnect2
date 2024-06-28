@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import DataTable from "react-data-table-component";
@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 import "../assests/css/conversation.css";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { UserContext } from "../App";
 
 const MySwal = withReactContent(Swal);
 
@@ -19,6 +20,7 @@ const customStyles = {
 const Conversation = () => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     axios
@@ -88,23 +90,33 @@ const Conversation = () => {
         />
       ),
     },
-    { name: "Title", selector: (row) => row.title },
+    {
+      name: "Title",
+      selector: (row) => (
+        <Link to={`/conversation/${row._id}`} className="conversation-title">
+          {row.title}
+        </Link>
+      ),
+    },
     { name: "Category", selector: (row) => row.category },
     { name: "Thoughts", selector: (row) => row.thoughts },
     { name: "Author", selector: (row) => row.author },
     {
-      name: "Action",
-      cell: (row) => (
-        <>
-          <Link to={`/update-conversation/${row._id}`}>
-            <FaPenToSquare className="table-icon" />
-          </Link>
-          <FaRegTrashCan
-            className="table-icon"
-            onClick={() => handleDelete(row._id)}
-          />
-        </>
-      ),
+      name: "",
+      cell: (row) =>
+        user.name === row.author ? (
+          <>
+            <Link to={`/update-conversation/${row._id}`}>
+              <FaPenToSquare className="table-icon" />
+            </Link>
+            <FaRegTrashCan
+              className="table-icon"
+              onClick={() => handleDelete(row._id)}
+            />
+          </>
+        ) : (
+          <></>
+        ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,

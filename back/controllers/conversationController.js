@@ -1,5 +1,6 @@
 import express from "express";
 import { ConversationModel } from "../models/Conversations.js";
+import { CommentModel } from "../models/Comments.js";
 
 const addConversation = async (req, res) => {
   try {
@@ -97,7 +98,32 @@ const updateConversation = async (req, res) => {
   }
 };
 
+//fetching a comment
+const createComment = async (req, res) => {
+  const { content, author, conversationId } = req.body;
+  try {
+    const newComment = await CommentModel({ content, author, conversationId });
+    await newComment.save();
+    res.status(201).json({ success: true, comment: newComment });
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
 
+const getComments = async (req, res) => {
+  const { conversationId } = req.params;
+  if (!conversationId) {
+    return res.status(400).json({ error: "No ID specified" });
+  }
+  try {
+    const comments = await CommentModel.find({ conversationId });
+    return res.status(200).json({ success: true, comments });
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 export {
   addConversation,
@@ -105,4 +131,6 @@ export {
   getConversation,
   deleteConversation,
   updateConversation,
+  createComment,
+  getComments,
 };

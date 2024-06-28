@@ -98,18 +98,21 @@ const MyConversations = () => {
     { name: "Thoughts", selector: (row) => row.thoughts },
     { name: "Author", selector: (row) => row.author },
     {
-      name: "Action",
-      cell: (row) => (
-        <>
-          <Link to={`/update-conversation/${row._id}`}>
-            <FaPenToSquare className="table-icon" />
-          </Link>
-          <FaRegTrashCan
-            className="table-icon"
-            onClick={() => handleDelete(row._id)}
-          />
-        </>
-      ),
+      name: "",
+      cell: (row) =>
+        user.name === row.author ? (
+          <>
+            <Link to={`/update-conversation/${row._id}`}>
+              <FaPenToSquare className="table-icon" />
+            </Link>
+            <FaRegTrashCan
+              className="table-icon"
+              onClick={() => handleDelete(row._id)}
+            />
+          </>
+        ) : (
+          <></>
+        ),
       ignoreRowClick: true,
       allowOverflow: true,
       button: true,
