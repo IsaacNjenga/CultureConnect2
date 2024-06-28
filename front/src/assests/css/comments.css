@@ -1,8 +1,9 @@
 .comments-section {
-    background-color: #f2f2f2;
+    background-color: rgba(242, 242, 242, 0.655);
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
+    color: #333;
   }
   
   .comments-heading {
