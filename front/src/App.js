@@ -5,6 +5,7 @@ import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import UserProfile from "./pages/UserProfile";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -30,6 +31,13 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoutes>
         <Dashboard />
+      </ProtectedRoutes>
+    ),
+  },
+  {path: "/profile",
+    element: (
+      <ProtectedRoutes>
+        <UserProfile />
       </ProtectedRoutes>
     ),
   },

@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import "../assests/css/navbar.css";
-
 import { UserContext } from "../App";
+
 function Navbar() {
   const { user } = useContext(UserContext);
+
   return (
     <div className="navbar">
       <div className="navbar-left">
@@ -18,7 +19,7 @@ function Navbar() {
         </Link>
         {user ? (
           <>
-            <Link to="/login" className="navbar-link">
+            <Link to="/profile" className="navbar-link">
               {user.name}
             </Link>
             <Link to="/dashboard" className="navbar-link">
