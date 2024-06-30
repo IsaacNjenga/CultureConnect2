@@ -4,6 +4,7 @@ import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import homePage from "./components/homePage";
 import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -66,6 +67,7 @@ function App() {
     <>
       <ToastContainer />
       <UserContext.Provider value={{ user, setUser }}>
+      <homePage />
         <RouterProvider router={router} />
       </UserContext.Provider>
     </>
