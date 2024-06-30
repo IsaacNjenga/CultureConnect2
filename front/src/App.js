@@ -3,8 +3,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
-import Home from "./pages/Home";
-import homePage from "./components/homePage";
+// import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +26,7 @@ axios.defaults.baseURL = "http://localhost:3001/CultureConnect/";
 axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
+  { path: "/", element: <HomePage /> },
   { path: "/register", element: <Register /> },
   { path: "/login", element: <Login /> },
   {
@@ -47,6 +47,7 @@ const router = createBrowserRouter([
   { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },
 ]);
+
 function App() {
   const [user, setUser] = useState();
   useEffect(() => {
@@ -63,11 +64,11 @@ function App() {
         console.log(err);
       });
   }, []);
+
   return (
     <>
       <ToastContainer />
       <UserContext.Provider value={{ user, setUser }}>
-      <homePage />
         <RouterProvider router={router} />
       </UserContext.Provider>
     </>

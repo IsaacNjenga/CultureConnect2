@@ -18,7 +18,7 @@
 
 .li,
 .start-convo-btn {
-  background-color: #8d363162; /* Light background color */
+  background-color: #484444; /* Light background color */
   color: #ffffff; /* Dark text color */
   padding: 15px 20px; /* Add padding */
   margin: 10px; /* Add margin */
@@ -58,14 +58,15 @@
 .button-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 20px;
 }
 
 .start-convo-link {
   display: inline-block;
+  margin: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #484444;
+  color:000 ;
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
@@ -74,5 +75,5 @@
 }
 
 .start-convo-link:hover {
-  background-color: #0056b3;
+  background-color: #6b6e71;
 }
