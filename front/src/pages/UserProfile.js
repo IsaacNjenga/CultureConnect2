@@ -8,7 +8,7 @@ function UserProfile() {
   const { user } = useContext(UserContext);
   const [profile, setProfile] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
-  const [profilePicPreview, setProfilePicPreview] = useState(null);
+  const [profilePicPreview, setProfilePicPreview] = useState("/assets/images/defaultProfilePic.png");
   const [bio, setBio] = useState("");
 
   useEffect(() => {
@@ -20,7 +20,9 @@ function UserProfile() {
         .then((response) => {
           setProfile(response.data.user);
           setBio(response.data.user.bio);
-          setProfilePicPreview(response.data.user.profilePic);
+          if (response.data.user.profilePic) {
+            setProfilePicPreview(response.data.user.profilePic);
+          }
         })
         .catch((error) => {
           console.error("Error fetching profile data", error);
@@ -74,7 +76,7 @@ function UserProfile() {
           <div className="profile-details">
             <div className="profile-picture">
               <img
-                src={profilePicPreview || "/assests/images/defaultProfilePic.png"}
+                src={profilePicPreview}
                 alt="Profile"
                 className="profile-img"
               />
