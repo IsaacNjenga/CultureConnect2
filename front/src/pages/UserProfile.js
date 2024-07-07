@@ -3,12 +3,13 @@ import { UserContext } from "../App";
 import axios from "axios";
 import "../assests/css/userProfile.css";
 import Navbar from "../components/Navbar";
+import defaultProfilePic from "../assests/css/defaultProfilePic.png"
 
 function UserProfile() {
   const { user } = useContext(UserContext);
   const [profile, setProfile] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
-  const [profilePicPreview, setProfilePicPreview] = useState("/assets/images/defaultProfilePic.png");
+  const [profilePicPreview, setProfilePicPreview] = useState(defaultProfilePic);
   const [bio, setBio] = useState("");
 
   useEffect(() => {
@@ -77,7 +78,7 @@ function UserProfile() {
             <div className="profile-picture">
               <img
                 src={profilePicPreview}
-                alt="Profile"
+                // alt="Profile"
                 className="profile-img"
               />
               <input type="file" onChange={handleProfilePicChange} />
