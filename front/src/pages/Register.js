@@ -11,6 +11,15 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [serverErrors, setServerErrors] = useState([]);
 
+  const tribesOfKenya = [
+    "Kikuyu", "Luhya", "Kalenjin", "Luo", "Kamba", "Somali", "Kisii", "Mijikenda",
+    "Maasai", "Taita", "Embu", "Meru", "Taveta", "Turkana", "Teso", "Ilchamus",
+    "Samburu", "Rendille", "Borana", "Gabra", "Orma", "Pokot", "Njemps", "Sakuye",
+    "Somali", "Galla", "Ndorobo", "Suba", "Ogiek", "El Molo", "Kuria", "Malakote",
+    "Swahili", "Arabs", "Waat", "Nubians", "Boni", "Giriama", "Digo", "Taveta", 
+    "Bajuni", "Orma", "Burji", "Sakuye"
+  ];
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -85,7 +94,17 @@ function Register() {
             onChange={handleChange}
           />
           {errors.password && <span className="error">{errors.password}</span>}
+
+          <label htmlFor="ethnicity" className="form-label">Ethnicity:</label>
+          <select className="form-control" name="ethnicity" onChange={handleChange}>
+            <option value="">Select your ethnicity</option>
+            {tribesOfKenya.map((tribe, index) => (
+              <option key={index} value={tribe}>{tribe}</option>
+            ))}
+          </select>
+          {errors.ethnicity && <span className="error">{errors.ethnicity}</span>}
         </div>
+        
         {serverErrors.length > 0 &&
           serverErrors.map((error, index) => (
             <p className="error" key={index}>

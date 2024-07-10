@@ -11,6 +11,16 @@ function UserProfile() {
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicPreview, setProfilePicPreview] = useState(defaultProfilePic);
   const [bio, setBio] = useState("");
+  const [ethnicity, setEthnicity] = useState("");
+
+  const tribesOfKenya = [
+    "Kikuyu", "Luhya", "Kalenjin", "Luo", "Kamba", "Somali", "Kisii", "Mijikenda",
+    "Maasai", "Taita", "Embu", "Meru", "Taveta", "Turkana", "Teso", "Ilchamus",
+    "Samburu", "Rendille", "Borana", "Gabra", "Orma", "Pokot", "Njemps", "Sakuye",
+    "Somali", "Galla", "Ndorobo", "Suba", "Ogiek", "El Molo", "Kuria", "Malakote",
+    "Swahili", "Arabs", "Waat", "Nubians", "Boni", "Giriama", "Digo", "Taveta", 
+    "Bajuni", "Orma", "Burji", "Sakuye"
+  ];
 
   useEffect(() => {
     if (user) {
@@ -21,6 +31,7 @@ function UserProfile() {
         .then((response) => {
           setProfile(response.data.user);
           setBio(response.data.user.bio);
+          setEthnicity(response.data.user.ethnicity);
           if (response.data.user.profilePic) {
             setProfilePicPreview(response.data.user.profilePic);
           }
@@ -41,9 +52,14 @@ function UserProfile() {
     setProfilePicPreview(URL.createObjectURL(file));
   };
 
+  const handleEthnicityChange = (e) => {
+    setEthnicity(e.target.value);
+  }
+
   const handleSaveChanges = () => {
     const formData = new FormData();
     formData.append("bio", bio);
+    formData.append("ethnicity", ethnicity);
     if (profilePic) {
       formData.append("profilePic", profilePic);
     }
@@ -78,13 +94,21 @@ function UserProfile() {
             <div className="profile-picture">
               <img
                 src={profilePicPreview}
-                // alt="Profile"
+                alt="Profile"
                 className="profile-img"
               />
               <input type="file" onChange={handleProfilePicChange} />
             </div>
             <p><strong>Name:</strong> {profile.name}</p>
             <p><strong>Email:</strong> {profile.email}</p>
+            <div className="profile-ethnicity">
+              <strong>Ethnicity:</strong>
+              <select value={ethnicity} onChange={handleEthnicityChange}>
+                {tribesOfKenya.map((tribe) => (
+                  <option key={tribe} value={tribe}>{tribe}</option>
+                ))}
+              </select>
+            </div>
             <div className="profile-bio">
               <strong>Bio:</strong>
               <textarea value={bio} onChange={handleBioChange} />
