@@ -11,7 +11,7 @@ const Register = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { name, email, password } = req.body;
+  const { name, email, password, bio, image, ethnicity } = req.body;
   try {
     const userExist = await UserModel.findOne({ email });
     if (userExist) {
@@ -20,7 +20,14 @@ const Register = async (req, res) => {
       });
     }
     const hashPassword = await bcrypt.hash(password, 12);
-    const newUser = new UserModel({ name, email, password: hashPassword });
+    const newUser = new UserModel({
+      name,
+      email,
+      password: hashPassword,
+      bio,
+      image,
+      ethnicity,
+    });
     const result = await newUser.save();
     result._doc.password = undefined;
     return res.status(201).json({ success: true, ...result._doc });

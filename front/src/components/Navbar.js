@@ -5,6 +5,7 @@ import unityIcon from "../assests/icons/unity.png"
 import OnlineIndicator from "../components/onlineIndicator.js";
 
 import { UserContext } from "../App";
+
 function Navbar() {
   const { user, isOnline } = useContext(UserContext);
   return (

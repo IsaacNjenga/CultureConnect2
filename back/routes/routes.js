@@ -1,5 +1,6 @@
 import express from "express";
 import { Register, Login, Auth } from "../controllers/userController.js";
+import { getProfile, updateProfile } from "../controllers/profileController.js";
 const router = express.Router();
 import { body } from "express-validator";
 import { VerifyUser } from "../middleware/verifyUser.js";
@@ -69,6 +70,10 @@ router.post(
 );
 
 router.get("/verify", VerifyUser, Auth);
+
+//profile route
+router.get("/profile/:id", VerifyUser, getProfile);
+router.post("/profile/:id/update", VerifyUser, updateProfile);
 
 //conversation Routes
 router.post("/addConversation", VerifyUser, addConversation);

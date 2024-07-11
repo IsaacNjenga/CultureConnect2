@@ -9,7 +9,56 @@ function Register() {
   const navigate = useNavigate();
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
+
+  const [image, setImage] = useState("");
   const [serverErrors, setServerErrors] = useState([]);
+
+  const tribesOfKenya = [
+    "Kikuyu",
+    "Luhya",
+    "Kalenjin",
+    "Luo",
+    "Kamba",
+    "Somali",
+    "Kisii",
+    "Mijikenda",
+    "Maasai",
+    "Taita",
+    "Embu",
+    "Meru",
+    "Taveta",
+    "Turkana",
+    "Teso",
+    "Ilchamus",
+    "Samburu",
+    "Rendille",
+    "Borana",
+    "Gabra",
+    "Orma",
+    "Pokot",
+    "Njemps",
+    "Sakuye",
+    "Somali",
+    "Galla",
+    "Ndorobo",
+    "Suba",
+    "Ogiek",
+    "El Molo",
+    "Kuria",
+    "Malakote",
+    "Swahili",
+    "Arabs",
+    "Waat",
+    "Nubians",
+    "Boni",
+    "Giriama",
+    "Digo",
+    "Taveta",
+    "Bajuni",
+    "Orma",
+    "Burji",
+    "Sakuye",
+  ];
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
@@ -20,8 +69,9 @@ function Register() {
     const errs = Validation(values);
     setErrors(errs);
     if (errs.name === "" && errs.email === "" && errs.password === "") {
+      const valueData = { ...values, image: image };
       axios
-        .post("register", values, {
+        .post("register", valueData, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -44,6 +94,18 @@ function Register() {
           }
         });
     }
+  };
+
+  const convertToBase64 = (e) => {
+    var reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.log("Error:", error);
+      alert("Error");
+    };
   };
 
   return (
@@ -85,7 +147,27 @@ function Register() {
             onChange={handleChange}
           />
           {errors.password && <span className="error">{errors.password}</span>}
+
+          <label htmlFor="ethnicity" className="form-label">
+            Ethnicity:
+          </label>
+          <select
+            className="form-control"
+            name="ethnicity"
+            onChange={handleChange}
+          >
+            <option value="">Select your ethnicity</option>
+            {tribesOfKenya.map((tribe, index) => (
+              <option key={index} value={tribe}>
+                {tribe}
+              </option>
+            ))}
+          </select>
+          {errors.ethnicity && (
+            <span className="error">{errors.ethnicity}</span>
+          )}
         </div>
+
         {serverErrors.length > 0 &&
           serverErrors.map((error, index) => (
             <p className="error" key={index}>
@@ -94,6 +176,13 @@ function Register() {
           ))}
         <button className="form-btn">Sign up!</button>
         <p>
+          <label htmlFor="proflie-pic">Profile Pic</label>
+          <input
+            id="imageUpload"
+            accept="image/*"
+            type="file"
+            onChange={convertToBase64}
+          />
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
