@@ -10,6 +10,18 @@
     color: #333;
   }
   
+  .comment-header{
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+  }
+
+  .comment-content{
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+  }
+
   .comments-list {
     list-style-type: none;
     padding: 0;
@@ -54,5 +66,10 @@
   
   .comment-submit-btn:hover {
     background-color: #0056b3;
+  }
+
+  .comments-count{
+    font-size: 70%;
+    color: rgb(116, 116, 116);
   }
   

@@ -7,8 +7,12 @@ const ConversationSchema = new mongoose.Schema(
     thoughts: { type: String, require: true },
     image: { type: String },
     author: { type: String, require: true },
+    audio: { type: String },
+    createdAt: { type: Date, default: Date.now },
   },
-  { collection: "conversations" }
+  {
+    collection: "conversations",
+  }
 );
 
 const ConversationModel = mongoose.model("Conversation", ConversationSchema);

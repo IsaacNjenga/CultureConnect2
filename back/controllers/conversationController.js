@@ -1,15 +1,15 @@
 import express from "express";
 import { ConversationModel } from "../models/Conversations.js";
-import { CommentModel } from "../models/Comments.js";
 
 const addConversation = async (req, res) => {
   try {
-    const { category, title, thoughts, image, author } = req.body;
+    const { category, title, thoughts, image, author, audio } = req.body;
     const newConversation = new ConversationModel({
       category,
       title,
       thoughts,
       image,
+      audio,
       author,
       postedBy: req.user._id,
     });
@@ -48,6 +48,8 @@ const getConversation = async (req, res) => {
         category: conversation.category,
         thoughts: conversation.thoughts,
         author: conversation.author,
+        audio: conversation.audio,
+        createdAt:conversation.createdAt
       },
     });
   } catch (error) {
@@ -99,38 +101,12 @@ const updateConversation = async (req, res) => {
 };
 
 //fetching a comment
-const createComment = async (req, res) => {
-  const { content, author, conversationId } = req.body;
-  try {
-    const newComment = await CommentModel({ content, author, conversationId });
-    await newComment.save();
-    res.status(201).json({ success: true, comment: newComment });
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    return res.status(500).json({ error: error.message });
-  }
-};
 
-const getComments = async (req, res) => {
-  const { conversationId } = req.params;
-  if (!conversationId) {
-    return res.status(400).json({ error: "No ID specified" });
-  }
-  try {
-    const comments = await CommentModel.find({ conversationId });
-    return res.status(200).json({ success: true, comments });
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    return res.status(500).json({ error: error.message });
-  }
-};
 
 export {
   addConversation,
   getConversations,
   getConversation,
   deleteConversation,
-  updateConversation,
-  createComment,
-  getComments,
+  updateConversation
 };

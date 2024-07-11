@@ -8,7 +8,7 @@ import { UserContext } from "../App";
 
 function Login() {
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { setUser,setIsOnline } = useContext(UserContext);
   const [values, setValues] = useState({});
   const [errors, setErrors] = useState({});
   const [serverErrors, setServerErrors] = useState([]);
@@ -33,6 +33,7 @@ function Login() {
           if (res.data.success) {
             localStorage.setItem("token", res.data.token);
             setUser(res.data.user);
+            setIsOnline(true)
             toast.success(`Welcome ${res.data.user.name}`, {
               position: "top-right",
               autoClose: 5000,

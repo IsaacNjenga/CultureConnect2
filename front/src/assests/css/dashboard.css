@@ -7,7 +7,7 @@
   background-size: cover;
 }
 
-.ul {
+.categories-list {
   list-style: none; /* Remove default list styling */
   padding: 0; /* Remove default padding */
   margin: 0; /* Remove default margin */
@@ -16,30 +16,37 @@
   justify-content: center; /* Center items */
 }
 
-.li,
-.start-convo-btn {
-  background-color: #8d363162; /* Light background color */
-  color: #ffffff; /* Dark text color */
-  padding: 15px 20px; /* Add padding */
-  margin: 10px; /* Add margin */
-  border-radius: 8px; /* Rounded corners */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-family: "Arial", sans-serif; /* Font style */
-  font-size: 16px; /* Font size */
+.category-item {
+  background-color: #8d363162;
+  color: #ffffff;
+  padding: 15px 20px;
+  margin: 10px;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  font-family: "Arial", sans-serif;
+  font-size: 18px;
   text-decoration: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative; /* Ensure relative positioning */
 }
 
-.li:hover {
-  background-color: #e0f0ff; /* Slightly different background on hover */
+.category-item:hover {
+  background-color: #650606; /* Slightly different background on hover */
   transform: translateY(-5px); /* Lift item on hover */
-  color: black;
+  color: rgb(0, 0, 0);
 }
 
-.li:active {
+.category-item:active {
   background-color: #d0e8ff; /* Different background on active */
   transform: translateY(-2px); /* Less lift on active */
+}
+
+.category-link {
+  display: flex; /* Ensure flexbox layout */
+  align-items: center; /* Center items vertically */
+  width: 100%; /* Fill the width of the parent */
+  height: 100%; /* Fill the height of the parent */
 }
 
 .dashboard-p {
@@ -58,7 +65,7 @@
 .button-container {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 20px 10px;
 }
 
 .start-convo-link {
@@ -71,8 +78,21 @@
   transition: background-color 0.3s;
   font-size: 16px;
   text-align: center;
+  margin: 0 10px;
 }
 
 .start-convo-link:hover {
   background-color: #0056b3;
+}
+
+.category-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-header img {
+  width: 34px; /* Adjust the size of the icon */
+  height: 34px; /* Maintain the aspect ratio by setting only width */
+  object-fit: contain;
 }

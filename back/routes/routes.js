@@ -3,15 +3,28 @@ import { Register, Login, Auth } from "../controllers/userController.js";
 const router = express.Router();
 import { body } from "express-validator";
 import { VerifyUser } from "../middleware/verifyUser.js";
+
 import {
   addConversation,
   getConversations,
   getConversation,
   deleteConversation,
   updateConversation,
+} from "../controllers/conversationController.js";
+
+import {
+  likePost,
+  unlikePost,
+  likedPosts,
+  getLikesCount,
+} from "../controllers/likeController.js";
+
+import {
   createComment,
   getComments,
-} from "../controllers/conversationController.js";
+  getCommentsCount,
+  deleteComment,
+} from "../controllers/commentsController.js";
 
 router.post(
   "/register",
@@ -63,7 +76,17 @@ router.get("/conversations", VerifyUser, getConversations);
 router.get("/conversation/:id", VerifyUser, getConversation);
 router.put("/update-conversation/:id", VerifyUser, updateConversation);
 router.delete("/conversation/:id", VerifyUser, deleteConversation);
+
+//comment routes
 router.post("/comments", VerifyUser, createComment);
 router.get("/comments/:conversationId", VerifyUser, getComments);
+router.get("/comments/count/:conversationId", VerifyUser, getCommentsCount);
+router.delete("/comments/:conversationId", VerifyUser, deleteComment);
+
+//like routes
+router.post("/like", VerifyUser, likePost);
+router.get("/likes/:conversationId", VerifyUser, likedPosts);
+router.get("/likes/count/:conversationId", VerifyUser, getLikesCount);
+router.delete("/unlike/:conversationId", VerifyUser, unlikePost);
 
 export { router as Router };

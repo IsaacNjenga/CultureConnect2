@@ -10,14 +10,21 @@ function AddConversation() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [image, setImage] = useState("");
+  const [audio, setAudio] = useState("");
   const [values, setValues] = useState({});
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const valueData = { ...values, author: user.name, image: image };
+    const valueData = {
+      ...values,
+      author: user.name,
+      image: image,
+      audio: audio,
+    };
     axios
       .post("addConversation", valueData, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -57,16 +64,35 @@ function AddConversation() {
     "Etiquette & Social Norms",
   ];
 
-  const convertToBase64 = (e) => {
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      setImage(reader.result);
-    };
-    reader.onerror = (error) => {
-      console.log("Error:", error);
-      alert("Error");
-    };
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const base64Image = await convertFileToBase64(file);
+      setImage(base64Image);
+    } catch (error) {
+      console.error("Error converting image file:", error);
+      toast.error("Error uploading image file", { position: "top-right" });
+    }
+  };
+
+  const handleAudioUpload = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const base64Data = await convertFileToBase64(file);
+      setAudio(base64Data);
+    } catch (error) {
+      console.error("Error converting audio file:", error);
+      toast.error("Error uploading audio file", { position: "top-right" });
+    }
   };
 
   const back = () => {
@@ -108,10 +134,17 @@ function AddConversation() {
             id="imageUpload"
             accept="image/*"
             type="file"
-            onChange={convertToBase64}
+            onChange={handleImageUpload}
           />
-          <label htmlFor="author">Author: {user.name}</label>
-
+          <label htmlFor="audioUpload">Upload Audio:</label>
+          <input
+            id="audioUpload"
+            accept="audio/*"
+            type="file"
+            onChange={handleAudioUpload}
+          />
+          <label htmlFor="author">Author: {user.name}</label>{" "}
+         
           <div className="button-container">
             <button className="submit-button" type="submit">
               Post

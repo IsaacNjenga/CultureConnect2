@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../assests/css/dashboard.css";
 
 function Logout() {
-  const { setUser } = useContext(UserContext);
+  const { setUser, setIsOnline } = useContext(UserContext);
   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
 
@@ -23,12 +23,13 @@ function Logout() {
       if (result.isConfirmed) {
         localStorage.clear();
         setUser(null);
+        setIsOnline(false);
         navigate("/");
       } else {
         navigate("/dashboard");
       }
     });
-  }, [MySwal, setUser, navigate]);
+  }, [MySwal, setUser, navigate, setIsOnline]);
 
   return <div className="logout"></div>;
 }

@@ -1,70 +1,83 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import DataTable from "react-data-table-component";
-import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import "../assests/css/conversation.css";
+import Icons from "../components/icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { UserContext } from "../App";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faTrashAlt,
+  faComment,
+  faHeart,
+} from "@fortawesome/free-solid-svg-icons";
+import CustomMoment from "../components/customMoment";
 
 const MySwal = withReactContent(Swal);
-
-const customStyles = {
-  headCells: {
-    style: {
-      fontSize: "15px",
-      fontWeight: 600,
-      borderBottom: "2px solid #dee2e6",
-      backgroundColor: "#f8f9fa",
-      padding: "12px",
-      textAlign: "center",
-      whiteSpace: "nowrap", // Prevents text wrap
-      textOverflow: "ellipsis", // Ellipsis for overflow text
-      overflow: "hidden", // Hide overflow content
-    },
-  },
-  cells: {
-    style: {
-      fontSize: "13px",
-      fontWeight: 500,
-      borderBottom: "1px solid #dee2e6",
-      padding: "10px",
-      textAlign: "center",
-      whiteSpace: "nowrap", // Prevents text wrap
-      textOverflow: "ellipsis", // Ellipsis for overflow text
-      overflow: "hidden", // Hide overflow content
-    },
-  },
-};
 
 const Conversation = () => {
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useContext(UserContext);
+  const [commentsCounts, setCommentsCounts] = useState({});
+  const [likesCounts, setLikesCounts] = useState({});
 
   useEffect(() => {
-    axios
-      .get("conversations", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
-      .then((response) => {
-        if (response.data.success) {
-          setConversations(response.data.conversations);
-        } else {
-          toast.error("No conversations found", { position: "top-right" });
-        }
-      })
-      .catch((err) => {
-        toast.error("Error fetching conversations", { position: "top-right" });
-        console.error(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    fetchConversations();
   }, []);
+
+  const fetchConversations = async () => {
+    try {
+      const response = await axios.get("conversations", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      if (response.data.success) {
+        const fetchedConversations = response.data.conversations;
+        setConversations(fetchedConversations);
+
+        const countsPromises = fetchedConversations.map((conversation) =>
+          axios.get(`comments/count/${conversation._id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+        );
+
+        const likesCountsPromises = fetchedConversations.map((conversation) =>
+          axios.get(`likes/count/${conversation._id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+        );
+
+        const countsResponses = await Promise.all(countsPromises);
+        const counts = countsResponses.reduce((acc, res, index) => {
+          acc[fetchedConversations[index]._id] = res.data.count;
+          return acc;
+        }, {});
+        setCommentsCounts(counts);
+
+        const countsLikesResponses = await Promise.all(likesCountsPromises);
+        const likesCount = countsLikesResponses.reduce((acc, index, res) => {
+          acc[fetchedConversations[index]._id] = res.data.likesCount;
+          return acc;
+        }, {});
+        setLikesCounts(likesCount);
+      } else {
+        toast.error("No conversations found", { position: "top-right" });
+      }
+    } catch (err) {
+      toast.error("Error fetching conversations", { position: "top-right" });
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDelete = (id) => {
     MySwal.fire({
@@ -84,7 +97,7 @@ const Conversation = () => {
             },
           })
           .then((res) => {
-            setConversations(res.data.conversations);
+            fetchConversations();
             MySwal.fire({
               title: "Deleted!",
               text: "Conversation deleted successfully",
@@ -102,51 +115,6 @@ const Conversation = () => {
     });
   };
 
-  const columns = [
-    {
-      name: "Image",
-      selector: (row) => (
-        <img
-          src={row.image}
-          alt="Conversation_image"
-          className="conversation-image"
-        />
-      ),
-      wrap: true,
-    },
-    {
-      name: "Title",
-      selector: (row) => (
-        <Link to={`/conversation/${row._id}`} className="conversation-title">
-          {row.title}
-        </Link>
-      ),
-      wrap: true,
-    },
-    { name: "Category", selector: (row) => row.category, wrap: true },
-    { name: "Thoughts", selector: (row) => row.thoughts, wrap: true },
-    { name: "Author", selector: (row) => row.author, wrap: true },
-    {
-      name: "Actions",
-      cell: (row) =>
-        user.name === row.author ? (
-          <>
-            <Link to={`/update-conversation/${row._id}`}>
-              <FaPenToSquare className="table-icon" />
-            </Link>
-            <FaRegTrashCan
-              className="table-icon"
-              onClick={() => handleDelete(row._id)}
-            />
-          </>
-        ) : null,
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      wrap: true,
-    },
-  ];
-
   return (
     <>
       <Navbar />
@@ -155,19 +123,87 @@ const Conversation = () => {
           <div className="loading-text">Loading...</div>
         ) : (
           <>
-            {conversations.length === 0 && (
+            {conversations.length === 0 ? (
               <div className="no-conversations">
-                <h1>No conversations posted</h1>
+                <h1>No posts available</h1>
+                <p>
+                  Start the <Link to="/dashboard">Conversation</Link>
+                </p>
               </div>
-            )}
-            {conversations.length > 0 && (
-              <DataTable
-                columns={columns}
-                data={conversations}
-                customStyles={customStyles}
-                pagination
-                responsive
-              />
+            ) : (
+              <div className="reddit-style-container">
+                {conversations.map((conversation) => (
+                  <div key={conversation._id} className="reddit-style-card">
+                    <div className="card-header">
+                      <Icons category={conversation.category} />
+                      <h2>{conversation.category}</h2> <strong>·</strong>{" "}
+                      <p className="comments-count">
+                        <CustomMoment postedTime={conversation.createdAt} />
+                      </p>
+                    </div>
+                    <div className="card-body">
+                      <h3>
+                        <Link
+                          to={`/conversation/${conversation._id}`}
+                          className="conversation-title"
+                        >
+                          {conversation.title}
+                        </Link>
+                      </h3>
+                      <p className="card-author">
+                        {user.name === conversation.author
+                          ? "You posted"
+                          : `Posted by ${conversation.author}`}
+                      </p>
+                      {conversation.image ? (
+                        <div className="conversation-image-container">
+                          <img
+                            src={conversation.image}
+                            alt="Conversation_image"
+                            className="conversation-image"
+                          />
+                        </div>
+                      ) : (
+                        <p className="card-thoughts">{conversation.thoughts}</p>
+                      )}
+                    </div>
+                    <div className="card-bottom">
+                      <div className="card-footer">
+                        <div className="comments-count">
+                          <FontAwesomeIcon
+                            icon={faComment}
+                            className="comment-icon"
+                          />
+                          {commentsCounts[conversation._id]}
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            className="comment-icon"
+                          />
+                          {likesCounts[conversation._id]}
+                        </div>
+                        {user.name === conversation.author && (
+                          <div className="card-actions">
+                            <Link
+                              to={`/update-conversation/${conversation._id}`}
+                              className="action-link"
+                            >
+                              <FontAwesomeIcon
+                                icon={faPen}
+                                className="table-icon"
+                              />
+                            </Link>
+                            <FontAwesomeIcon
+                              icon={faTrashAlt}
+                              className="table-icon"
+                              onClick={() => handleDelete(conversation._id)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
           </>
         )}

@@ -3,10 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import "./config/db.js";
 import { Router } from "./routes/routes.js";
+import bodyParser from "body-parser";
 
 dotenv.config({ path: "./config/.env" });
 const app = express();
-
+app.use(bodyParser.json({ limit: "10mb" }));
 const corsOptions = {
   origin: "http://localhost:3000",
   methods: ["GET", "POST", "PUT", "DELETE"],

@@ -48,6 +48,8 @@ const router = createBrowserRouter([
 ]);
 function App() {
   const [user, setUser] = useState();
+  const [isOnline, setIsOnline] = useState(false);
+
   useEffect(() => {
     axios
       .get("verify", {
@@ -56,6 +58,7 @@ function App() {
       .then((res) => {
         if (res.data.success) {
           setUser(res.data.user);
+          setIsOnline(true);
         }
       })
       .catch((err) => {
@@ -65,7 +68,7 @@ function App() {
   return (
     <>
       <ToastContainer />
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ user, setUser, setIsOnline, isOnline }}>
         <RouterProvider router={router} />
       </UserContext.Provider>
     </>

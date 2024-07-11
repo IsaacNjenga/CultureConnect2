@@ -2,28 +2,41 @@ import React, { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "./Navbar";
-import DataTable from "react-data-table-component";
-import { FaPenToSquare, FaRegTrashCan } from "react-icons/fa6";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPen,
+  faTrashAlt,
+  faComment,
+} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Link } from "react-router-dom";
 import { UserContext } from "../App";
+import "../assests/css/conversation.css";
+import Icons from "./icons";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 const MySwal = withReactContent(Swal);
-
-const customStyles = {
-  headCells: { style: { fontSize: "15px", fontWeight: 600 } },
-  cells: { style: { fontSize: "13px", fontWeight: 500 } },
-};
 
 function Category() {
   const { category } = useParams();
   const { user } = useContext(UserContext);
-  const [content, setContent] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [commentsCounts, setCommentsCounts] = useState({});
 
   useEffect(() => {
+    fetchConversations();
+  }, []);
+
+  const getTimeDifference = (postedTime) => {
+    return moment(postedTime).fromNow();
+  };
+
+  const fetchConversations = () => {
     axios
-      .get("/conversations", {
+      .get("conversations", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((response) => {
@@ -31,13 +44,46 @@ function Category() {
           const filteredConversations = response.data.conversations.filter(
             (conversation) => conversation.category === category
           );
-          setContent(filteredConversations);
+          setConversations(filteredConversations);
+          initializeCommentsCounts(response.data.conversations);
         } else {
           console.error("No Content Found");
         }
       })
-      .catch((err) => console.log(err));
-  }, [category]);
+      .catch((err) => console.log(err))
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const initializeCommentsCounts = (conversations) => {
+    const initialCounts = conversations.reduce((acc, conversation) => {
+      return { ...acc, [conversation._id]: 0 };
+    }, {});
+    setCommentsCounts(initialCounts);
+    conversations.forEach((conversation) => {
+      fetchCommentsCount(conversation._id);
+    });
+  };
+
+  const fetchCommentsCount = (conversationId) => {
+    axios
+      .get(`comments/${conversationId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((response) => {
+        if (response.data.success) {
+          setCommentsCounts((prevCounts) => ({
+            ...prevCounts,
+            [conversationId]: response.data.comments.length,
+          }));
+        }
+      })
+      .catch((err) => {
+        toast.error("Error fetching comments", { position: "top-right" });
+        console.error(err);
+      });
+  };
 
   const handleDelete = (id) => {
     MySwal.fire({
@@ -57,7 +103,7 @@ function Category() {
             },
           })
           .then((res) => {
-            setContent(res.data.conversations);
+            fetchConversations();
             MySwal.fire({
               title: "Deleted!",
               text: "Deleted successfully",
@@ -75,57 +121,92 @@ function Category() {
     });
   };
 
-  const columns = [
-    {
-      name: "Image",
-      selector: (row) => (
-        <img
-          src={row.image}
-          alt="Conversation_image"
-          className="conversation-image"
-        />
-      ),
-    },
-    { name: "Title", selector: (row) => row.title },
-    { name: "Category", selector: (row) => row.category },
-    { name: "Thoughts", selector: (row) => row.thoughts },
-    { name: "Author", selector: (row) => row.author },
-    {
-      name: "",
-      cell: (row) =>
-        user.name === row.author ? (
-          <>
-            <Link to={`/update-conversation/${row._id}`}>
-              <FaPenToSquare className="table-icon" />
-            </Link>
-            <FaRegTrashCan
-              className="table-icon"
-              onClick={() => handleDelete(row._id)}
-            />
-          </>
-        ) : (
-          <></>
-        ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-    },
-  ];
-
   return (
     <>
       <Navbar />
-      <div>
-        <h1>{category}</h1>{" "}
-        {content.length === 0 ? (
-          <p>No content available for this category.</p>
+      <div className="conversations-container">
+        {loading ? (
+          <div className="loading-text">Loading...</div>
         ) : (
-          <DataTable
-            columns={columns}
-            data={content}
-            customStyles={customStyles}
-            pagination
-          />
+          <>
+            {conversations.length === 0 ? (
+              <div className="no-conversations">
+                <h1>No posts available</h1>
+                <p>
+                  Start the <Link to="/dashboard">Conversation</Link>
+                </p>
+              </div>
+            ) : (
+              <div className="reddit-style-container">
+                {conversations.map((conversation) => (
+                  <div key={conversation._id} className="reddit-style-card">
+                    <div className="card-header">
+                      <Icons category={conversation.category} />
+                      <h2>{conversation.category}</h2> .{" "}
+                      <p className="comments-count">
+                        {getTimeDifference(conversation.createdAt)}
+                      </p>
+                    </div>
+                    <div className="card-body">
+                      <h3>
+                        <Link
+                          to={`/conversation/${conversation._id}`}
+                          className="conversation-title"
+                        >
+                          {conversation.title}
+                        </Link>
+                      </h3>
+                      <p className="card-author">
+                        {user.name === conversation.author
+                          ? "You posted"
+                          : `Posted by ${conversation.author}`}
+                      </p>
+                      {conversation.image ? (
+                        <div className="conversation-image-container">
+                          <img
+                            src={conversation.image}
+                            alt="Conversation_image"
+                            className="conversation-image"
+                          />
+                        </div>
+                      ) : (
+                        <p className="card-thoughts">{conversation.thoughts}</p>
+                      )}
+                    </div>
+                    <div className="card-bottom">
+                      <div className="card-footer">
+                        <div className="comments-count">
+                          <FontAwesomeIcon
+                            icon={faComment}
+                            className="comment-icon"
+                          />
+                          {commentsCounts[conversation._id]}
+                        </div>
+                        {user.name === conversation.author && (
+                          <div className="card-actions">
+                            <Link
+                              to={`/update-conversation/${conversation._id}`}
+                              className="action-link"
+                            >
+                              <FontAwesomeIcon
+                                icon={faPen}
+                                className="table-icon"
+                              />
+                            </Link>
+                            <FontAwesomeIcon
+                              icon={faTrashAlt}
+                              className="table-icon"
+                              onClick={() => handleDelete(conversation._id)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
     </>

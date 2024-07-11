@@ -5,21 +5,22 @@
   justify-content: center;
   align-items: center;
   height: 90vh;
-  background-image: url(CultureHomeImage.jpg);
+  background-image: linear-gradient(rgba(42, 39, 39, 0.173), rgba(132, 129, 129, 0.7)),
+    url("CultureHomeImage.jpg");
   background-repeat: no-repeat;
   background-size: 100%;
-  padding-inline: 30px;
+  padding-inline: 20px;
 }
 
 .home-title {
-  font-size: 70px;
+  font-size: 80px;
   margin-bottom: 10px;
   color: rgba(255, 0, 0, 0.813);
   word-spacing: 2%;
 }
 
 .home-description {
-  font-size: 30px;
+  font-size: 35px;
   margin-bottom: 20px;
   color: rgba(88, 7, 7, 0.722);
 }
@@ -29,4 +30,13 @@
   margin-bottom: 20px;
   font-weight: bold;
   color: rgb(255, 255, 255);
+  text-decoration: none;
 }
+
+.icon {
+  width: 8%;
+  height: auto;
+  margin: 8px;
+}
+
+

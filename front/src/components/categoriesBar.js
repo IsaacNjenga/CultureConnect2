@@ -1,6 +1,7 @@
 import React from "react";
 import "../assests/css/dashboard.css";
 import { Link } from "react-router-dom";
+import Icons from "./icons";
 
 function CategoriesBar() {
   const categories = [
@@ -19,37 +20,47 @@ function CategoriesBar() {
     "Folk Tales & Legends",
     "Etiquette & Social Norms",
   ];
+
   return (
     <div>
-      <div>
-        <div className="button-container">
-          <Link to="/add-conversation" className="start-convo-link">
-            Start A Conversation
-          </Link>
-          <Link to="/conversation" className="start-convo-link">
-            View posts
-          </Link>
-          <Link to="/my-conversations" className="start-convo-link">
-            View My Posts
-          </Link>
-        </div>
-        <h3 className="dashboard-p">
-          Explore the richness of diverse cultures by selecting a topic below
-          and start your journey of discovery!
-        </h3>
-        <ul className="ul">
-          {categories.map((category, index) => (
-            <li key={index} className="li">
-              <Link
-                to={`/category/${encodeURIComponent(category)}`}
-                className="li"
-              >
-                {category}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <br /> <br /> <br />
+      <div className="button-container">
+        <Link to="/add-conversation" className="start-convo-link">
+          Start A Conversation
+        </Link>
+        <Link to="/conversation" className="start-convo-link">
+          View posts
+        </Link>
+        <Link to="/my-conversations" className="start-convo-link">
+          My Posts
+        </Link>
       </div>
+      <h3 className="dashboard-p">
+        Explore the richness of diverse cultures by selecting a topic below and
+        start your journey of discovery!
+      </h3>
+      <ul className="categories-list">
+        {categories.map((category, index) => (
+          <li key={index} className="category-item">
+            <Link
+              to={`/category/${encodeURIComponent(category)}`}
+              style={{
+                color: "white",
+                textDecoration: "none",
+                ":hover": {
+                  color: "black",
+                  textDecoration: "none",
+                },
+              }}
+            >
+              <div className="category-header">
+                <Icons category={category} />
+                {category}
+              </div>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

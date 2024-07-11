@@ -1,28 +1,44 @@
-.converse-container { display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: linear-gradient(rgba(53, 51, 51, 0.7), rgba(0, 0, 0, 0.351)),
-      url("conversing.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    padding: 10px;
+.converse-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-image: linear-gradient(
+      rgba(126, 120, 120, 0.7),
+      rgba(144, 27, 27, 0.351)
+    ),
+    url("conversing.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 25px;
 }
 
 .conversation-details-container {
-  max-width: 800px;
-  margin: auto;
+  max-width: 600px;
+  margin: 4%;
   color: azure;
-  padding: 20px;
-  background-color: #da787880;
+  padding: 25px;
+  background-color: #8e5e2a80;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust the gap between the icon and the category name */
+}
+
+.card-header img {
+  width: 34px; /* Adjust the size of the icon */
+  height: 34px; /* Maintain the aspect ratio by setting only width */
+  object-fit: contain;
+}
+
 .loading-text {
   font-size: 18px;
-  color: #666;
+  color: #ffffff;
   text-align: center;
   margin-top: 20px;
 }
@@ -32,11 +48,19 @@
   margin-bottom: 10px;
 }
 
+.conversation-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 20px 0;
+}
+
 .conversation-image {
-  max-width: 100%;
+  width: 50%;
   height: auto;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  margin: auto;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .conversation-info {
