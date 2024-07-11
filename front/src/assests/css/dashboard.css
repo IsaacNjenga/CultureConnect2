@@ -16,16 +16,17 @@
   justify-content: center; /* Center items */
 }
 
-.category-item {
-  background-color: #8d363162;
-  color: #ffffff;
-  padding: 15px 20px;
-  margin: 10px;
-  border-radius: 8px;
-  transition: background-color 0.3s, transform 0.3s;
-  cursor: pointer;
-  font-family: "Arial", sans-serif;
-  font-size: 18px;
+.li,
+.start-convo-btn {
+  background-color: #484444; /* Light background color */
+  color: #ffffff; /* Dark text color */
+  padding: 15px 20px; /* Add padding */
+  margin: 10px; /* Add margin */
+  border-radius: 8px; /* Rounded corners */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-family: "Arial", sans-serif; /* Font style */
+  font-size: 16px; /* Font size */
   text-decoration: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative; /* Ensure relative positioning */
@@ -65,14 +66,15 @@
 .button-container {
   display: flex;
   justify-content: center;
-  margin: 20px 10px;
+  margin: 20px;
 }
 
 .start-convo-link {
   display: inline-block;
+  margin: 10px;
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: #484444;
+  color:000 ;
   text-decoration: none;
   border-radius: 5px;
   transition: background-color 0.3s;
@@ -83,16 +85,4 @@
 
 .start-convo-link:hover {
   background-color: #0056b3;
-}
-
-.category-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.category-header img {
-  width: 34px; /* Adjust the size of the icon */
-  height: 34px; /* Maintain the aspect ratio by setting only width */
-  object-fit: contain;
 }

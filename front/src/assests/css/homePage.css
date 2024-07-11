@@ -1,0 +1,72 @@
+body {
+  background-image: url(CultureHomeImage.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'Roboto', sans-serif;
+}
+
+.home-container {
+  text-align: center;
+  color: white;
+}
+
+.content-wrapper {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
+  color: #f8f8f8;
+}
+
+h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-family: 'Montserrat', sans-serif;
+  color: #f8f8f8;
+}
+
+.home-description2 {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #f8f8f8;
+}
+
+.home-description {
+  font-size: 1rem;
+  color: #f8f8f8;
+  line-height: 1.5;
+  margin: 0 20px;
+}
+
+a:link {
+  color: #ffeb3b;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #ffeb3b;
+}
+
+a:hover {
+  color: #f44336;
+}
+
+a:active {
+  color: #f44336;
+}
+
+p{
+  font-family: monospace;
+  font-size: xx-large;
+  color: #656161;
+}
