@@ -1,4 +1,5 @@
 import { UserModel } from "../models/User.js";
+import { ProfileModel } from "../models/profile.js";
 import path from "path";
 import fs from "fs";
 

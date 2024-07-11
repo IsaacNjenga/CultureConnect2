@@ -3,7 +3,7 @@ import { UserContext } from "../App";
 import axios from "axios";
 import "../assests/css/userProfile.css";
 import Navbar from "../components/Navbar";
-import defaultProfilePic from "../assests/css/defaultProfilePic.png"
+import defaultProfilePic from "../assests/css/defaultProfilePic.png";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
@@ -14,12 +14,50 @@ function UserProfile() {
   const [ethnicity, setEthnicity] = useState("");
 
   const tribesOfKenya = [
-    "Kikuyu", "Luhya", "Kalenjin", "Luo", "Kamba", "Somali", "Kisii", "Mijikenda",
-    "Maasai", "Taita", "Embu", "Meru", "Taveta", "Turkana", "Teso", "Ilchamus",
-    "Samburu", "Rendille", "Borana", "Gabra", "Orma", "Pokot", "Njemps", "Sakuye",
-    "Somali", "Galla", "Ndorobo", "Suba", "Ogiek", "El Molo", "Kuria", "Malakote",
-    "Swahili", "Arabs", "Waat", "Nubians", "Boni", "Giriama", "Digo", "Taveta", 
-    "Bajuni", "Orma", "Burji", "Sakuye"
+    "Kikuyu",
+    "Luhya",
+    "Kalenjin",
+    "Luo",
+    "Kamba",
+    "Somali",
+    "Kisii",
+    "Mijikenda",
+    "Maasai",
+    "Taita",
+    "Embu",
+    "Meru",
+    "Taveta",
+    "Turkana",
+    "Teso",
+    "Ilchamus",
+    "Samburu",
+    "Rendille",
+    "Borana",
+    "Gabra",
+    "Orma",
+    "Pokot",
+    "Njemps",
+    "Sakuye",
+    "Somali",
+    "Galla",
+    "Ndorobo",
+    "Suba",
+    "Ogiek",
+    "El Molo",
+    "Kuria",
+    "Malakote",
+    "Swahili",
+    "Arabs",
+    "Waat",
+    "Nubians",
+    "Boni",
+    "Giriama",
+    "Digo",
+    "Taveta",
+    "Bajuni",
+    "Orma",
+    "Burji",
+    "Sakuye",
   ];
 
   useEffect(() => {
@@ -32,8 +70,8 @@ function UserProfile() {
           setProfile(response.data.user);
           setBio(response.data.user.bio);
           setEthnicity(response.data.user.ethnicity);
-          if (response.data.user.profilePic) {
-            setProfilePicPreview(response.data.user.profilePic);
+          if (response.data.user.image) {
+            setProfilePicPreview(response.data.user.image);
           }
         })
         .catch((error) => {
@@ -54,7 +92,7 @@ function UserProfile() {
 
   const handleEthnicityChange = (e) => {
     setEthnicity(e.target.value);
-  }
+  };
 
   const handleSaveChanges = () => {
     const formData = new FormData();
@@ -99,13 +137,19 @@ function UserProfile() {
               />
               <input type="file" onChange={handleProfilePicChange} />
             </div>
-            <p><strong>Name:</strong> {profile.name}</p>
-            <p><strong>Email:</strong> {profile.email}</p>
+            <p>
+              <strong>Name:</strong> {profile.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {profile.email}
+            </p>
             <div className="profile-ethnicity">
               <strong>Ethnicity:</strong>
               <select value={ethnicity} onChange={handleEthnicityChange}>
                 {tribesOfKenya.map((tribe) => (
-                  <option key={tribe} value={tribe}>{tribe}</option>
+                  <option key={tribe} value={tribe}>
+                    {tribe}
+                  </option>
                 ))}
               </select>
             </div>
