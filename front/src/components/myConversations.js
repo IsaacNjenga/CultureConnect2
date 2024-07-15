@@ -14,6 +14,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { UserContext } from "../App";
 import Icons from "./icons.js";
+import Loader from "./loader";
 
 const MySwal = withReactContent(Swal);
 
@@ -122,7 +123,7 @@ const MyConversations = () => {
       <Navbar />
       <div className="conversations-container">
         {loading ? (
-          <div className="loading-text">Loading...</div>
+          <Loader />
         ) : (
           <>
             {conversations.length === 0 ? (

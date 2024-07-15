@@ -7,9 +7,11 @@ import Navbar from "../components/Navbar";
 import defaultProfilePic from "../assests/css/defaultProfilePic.png";
 import { Link } from "react-router-dom";
 import AddProfile from "../components/addProfile";
+import Loader from "../components/loader";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
@@ -22,6 +24,7 @@ function UserProfile() {
   const [data, setData] = useState(false);
 
   const fetchProfile = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axios.get("profile", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -37,6 +40,7 @@ function UserProfile() {
 
       console.log(response.data.results);
       if (filteredProfile) {
+        setLoading(false);
         setValues({
           firstname: filteredProfile.firstname,
           lastname: filteredProfile.lastname,
@@ -49,6 +53,7 @@ function UserProfile() {
         }
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching profile:", error);
       toast.error("Error fetching profile data", { position: "top-right" });
     }
@@ -94,6 +99,7 @@ function UserProfile() {
 
   return (
     <>
+      {loading && <Loader />}
       <Navbar />
       {data ? (
         <div className="profile-container">

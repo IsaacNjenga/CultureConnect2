@@ -16,6 +16,7 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import CustomMoment from "../components/customMoment";
+import Loader from "../components/loader";
 
 const MySwal = withReactContent(Swal);
 
@@ -27,6 +28,7 @@ const Conversation = () => {
   const [likesCounts, setLikesCounts] = useState({});
 
   const fetchConversations = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("conversations", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -43,7 +45,7 @@ const Conversation = () => {
           })
         );
 
-        const likesCountsPromises = fetchedConversations.map((conversation) =>
+        const likesPromises = fetchedConversations.map((conversation) =>
           axios.get(`likes/count/${conversation._id}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -51,19 +53,22 @@ const Conversation = () => {
           })
         );
 
-        const countsResponses = await Promise.all(countsPromises);
+        const [countsResponses, likesResponses] = await Promise.all([
+          Promise.all(countsPromises),
+          Promise.all(likesPromises),
+        ]);
+
         const counts = countsResponses.reduce((acc, res, index) => {
           acc[fetchedConversations[index]._id] = res.data.count;
           return acc;
         }, {});
         setCommentsCounts(counts);
 
-        const countsLikesResponses = await Promise.all(likesCountsPromises);
-        const likesCount = countsLikesResponses.reduce((acc, index, res) => {
-          acc[fetchedConversations[index]._id] = res.data.likesCount;
+        const likes = likesResponses.reduce((acc, res, index) => {
+          acc[fetchedConversations[index]._id] = res.data.count;
           return acc;
         }, {});
-        setLikesCounts(likesCount);
+        setLikesCounts(likes);
       } else {
         toast.error("No conversations found", { position: "top-right" });
       }
@@ -120,7 +125,7 @@ const Conversation = () => {
       <Navbar />
       <div className="conversations-container">
         {loading ? (
-          <div className="loading-text">Loading...</div>
+          <Loader />
         ) : (
           <>
             {conversations.length === 0 ? (

@@ -6,10 +6,12 @@ import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import defaultProfilePic from "../assests/css/defaultProfilePic.png";
 import { useNavigate } from "react-router-dom";
+import Loader from "./loader";
 
 function UpdateProfile() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     firstname: "",
     lastname: "",
@@ -21,6 +23,7 @@ function UpdateProfile() {
   const [profilePicPreview, setProfilePicPreview] = useState(defaultProfilePic);
 
   const fetchProfile = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axios.get("profile", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -29,6 +32,7 @@ function UpdateProfile() {
         (profile) => profile.postedBy === user._id
       );
       if (filteredProfile) {
+        setLoading(false);
         setValues({
           firstname: filteredProfile.firstname,
           lastname: filteredProfile.lastname,
@@ -41,6 +45,7 @@ function UpdateProfile() {
         }
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error fetching profile:", error);
       toast.error("Error fetching profile data", { position: "top-right" });
     }
@@ -94,7 +99,7 @@ function UpdateProfile() {
     "Burji",
     "Sakuye",
   ];
-  
+
   const handleChange = (e) => {
     setValues((prevValues) => ({
       ...prevValues,
@@ -160,6 +165,7 @@ function UpdateProfile() {
 
   return (
     <>
+      {loading && <Loader />}
       <Navbar />
       <div className="profile-container">
         <h2 className="profile-heading">User Profile</h2>
@@ -226,8 +232,9 @@ function UpdateProfile() {
           <div className="profile-ethnicity">
             <strong>Ethnicity:</strong>
             <select name="ethnicity" onChange={handleChange}>
+              <option value="">Select Ethnicity</option>
               {tribesOfKenya.map((tribe) => (
-                <option key={tribe} name="tribe">
+                <option key={tribe} value={tribe}>
                   {tribe}
                 </option>
               ))}

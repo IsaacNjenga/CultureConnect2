@@ -28,7 +28,6 @@ function UserDetails() {
       });
 
       const profileData = response.data.profile;
-      console.log(profileData);
       if (profileData) {
         setValues({
           firstname: profileData.firstname,
@@ -71,7 +70,6 @@ function UserDetails() {
               alt="Profile"
               className="profile-img"
             />
-            <input type="file" name="image" readOnly />
           </div>
           <div>
             <p>Username: {values.username}</p>

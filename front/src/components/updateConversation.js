@@ -5,6 +5,7 @@ import "../assests/css/conversation.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../App";
+import Loader from "./loader";
 
 function UpdateConversation() {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ function UpdateConversation() {
   const { user } = useContext(UserContext);
   const [newImage, setNewImage] = useState("");
   const [imageChange, setImageChange] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState({
     title: "",
     author: user.name,
@@ -25,6 +27,7 @@ function UpdateConversation() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const valueData = {
       ...values,
       author: user.name,
@@ -36,6 +39,7 @@ function UpdateConversation() {
       })
       .then((res) => {
         if (res.data.success) {
+          setLoading(false);
           toast.success("Conversation Posted!", {
             position: "top-right",
             autoClose: 500,
@@ -44,7 +48,8 @@ function UpdateConversation() {
         }
       })
       .catch((err) => {
-        toast.error("Error while posting!", {
+        setLoading(false);
+        toast.error("Error while updating!", {
           position: "top-right",
           autoClose: 2000,
         });
@@ -53,12 +58,14 @@ function UpdateConversation() {
   };
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("conversation/" + id, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
       .then((response) => {
         if (response.data.success) {
+          setLoading(false);
           setValues({
             title: response.data.conversation.title,
             author: response.data.conversation.author,
@@ -71,6 +78,7 @@ function UpdateConversation() {
         }
       })
       .catch((err) => {
+        setLoading(false);
         toast.error("Error fetching conversations", { position: "top-right" });
         console.error(err);
       });
@@ -112,6 +120,7 @@ function UpdateConversation() {
 
   return (
     <>
+      {loading && <Loader />}
       <Navbar />
       <div className="add-conversation">
         <form className="conversation-form" onSubmit={handleSubmit}>

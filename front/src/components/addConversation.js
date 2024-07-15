@@ -5,6 +5,7 @@ import "../assests/css/conversation.css";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { UserContext } from "../App";
+import Loader from "./loader";
 
 function AddConversation() {
   const navigate = useNavigate();
@@ -12,13 +13,15 @@ function AddConversation() {
   const [image, setImage] = useState("");
   const [audio, setAudio] = useState("");
   const [values, setValues] = useState({});
-  
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const valueData = {
       ...values,
       author: user.name,
@@ -31,6 +34,7 @@ function AddConversation() {
       })
       .then((res) => {
         if (res.data.success) {
+          setLoading(false);
           toast.success("Conversation Posted!", {
             position: "top-right",
             autoClose: 500,
@@ -39,6 +43,7 @@ function AddConversation() {
         }
       })
       .catch((err) => {
+        setLoading(false);
         toast.error("Error while posting!", {
           position: "top-right",
           autoClose: 2000,
@@ -101,6 +106,7 @@ function AddConversation() {
 
   return (
     <>
+      {loading && <Loader />}
       <Navbar />
       <div className="add-conversation">
         <form className="conversation-form" onSubmit={handleSubmit}>
@@ -144,7 +150,6 @@ function AddConversation() {
             onChange={handleAudioUpload}
           />
           <label htmlFor="author">Author: {user.name}</label>{" "}
-         
           <div className="button-container">
             <button className="submit-button" type="submit">
               Post

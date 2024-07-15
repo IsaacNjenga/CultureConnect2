@@ -5,11 +5,13 @@ import axios from "axios";
 import "../assests/css/userProfile.css";
 import { toast } from "react-toastify";
 import defaultProfilePic from "../assests/css/defaultProfilePic.png";
+import Loader from "./loader";
 
 function AddProfile() {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [values, setValues] = useState({});
+  const [loading, setLoading] = useState(false);
   const [image, setImage] = useState("");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultProfilePic);
 
@@ -61,6 +63,7 @@ function AddProfile() {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true);
     e.preventDefault();
     console.log(values);
     const valuesData = {
@@ -75,6 +78,7 @@ function AddProfile() {
       })
       .then((res) => {
         if (res.data.success) {
+          setLoading(false);
           toast.success("Profile Saved!", {
             position: "top-right",
             autoClose: 500,
@@ -83,6 +87,7 @@ function AddProfile() {
         }
       })
       .catch((err) => {
+        setLoading(false);
         toast.error("Error while saving!", {
           position: "top-right",
           autoClose: 2000,
@@ -117,6 +122,7 @@ function AddProfile() {
 
   return (
     <>
+      {loading && <Loader />}
       <div className="profile-container">
         <h2 className="profile-heading">User Profile</h2>
 

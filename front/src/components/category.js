@@ -16,6 +16,7 @@ import "../assests/css/conversation.css";
 import Icons from "./icons";
 import { toast } from "react-toastify";
 import moment from "moment";
+import Loader from "./loader";
 
 const MySwal = withReactContent(Swal);
 
@@ -126,7 +127,7 @@ function Category() {
       <Navbar />
       <div className="conversations-container">
         {loading ? (
-          <div className="loading-text">Loading...</div>
+          <Loader />
         ) : (
           <>
             {conversations.length === 0 ? (

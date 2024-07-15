@@ -32,7 +32,6 @@ function ConversationDetails() {
         });
         if (response.data.success) {
           const fetchedConversation = response.data.conversation;
-          console.log("Fetched conversation:", fetchedConversation); // Add this line for debugging
 
           setConversation(fetchedConversation);
           setAudio(!!fetchedConversation.audio);
