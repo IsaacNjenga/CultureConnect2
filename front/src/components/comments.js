@@ -11,7 +11,7 @@ import withReactContent from "sweetalert2-react-content";
 
 const MySwal = withReactContent(Swal);
 
-function Comments({ conversationId }) {
+function Comments({ conversationId, onCommentsCountUpdate }) {
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
@@ -20,7 +20,7 @@ function Comments({ conversationId }) {
   const author = user.name;
   useEffect(() => {
     fetchComments();
-  }, [conversationId]);
+  }, [conversationId, onCommentsCountUpdate]);
 
   const fetchComments = async () => {
     if (conversationId) {
@@ -30,6 +30,7 @@ function Comments({ conversationId }) {
         });
         if (response.data.success) {
           const fetchedComments = response.data.comments;
+          onCommentsCountUpdate(response.data.comments.length);
           setComments(fetchedComments);
           const countsPromises = fetchedComments.map((conversation) =>
             axios.get(`comments/count/${conversation._id}`, {

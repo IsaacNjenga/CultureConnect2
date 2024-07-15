@@ -25,7 +25,7 @@ function Navbar() {
         </Link>
         {user ? (
           <>
-            <Link to="/login" className="navbar-link">
+            <Link to="/profile" className="navbar-link">
               {user.name} {isOnline && <OnlineIndicator />}
             </Link>
             <Link to="/dashboard" className="navbar-link">

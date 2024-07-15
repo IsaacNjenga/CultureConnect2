@@ -26,10 +26,6 @@ const Conversation = () => {
   const [commentsCounts, setCommentsCounts] = useState({});
   const [likesCounts, setLikesCounts] = useState({});
 
-  useEffect(() => {
-    fetchConversations();
-  }, []);
-
   const fetchConversations = async () => {
     try {
       const response = await axios.get("conversations", {
@@ -78,6 +74,10 @@ const Conversation = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchConversations();
+  }, []);
 
   const handleDelete = (id) => {
     MySwal.fire({
@@ -140,7 +140,9 @@ const Conversation = () => {
                       <p className="comments-count">
                         <CustomMoment postedTime={conversation.createdAt} />
                       </p>
-                    </div>
+                    </div>{" "}
+                    <br />
+                    <hr />
                     <div className="card-body">
                       <h3>
                         <Link
@@ -150,6 +152,7 @@ const Conversation = () => {
                           {conversation.title}
                         </Link>
                       </h3>
+
                       <p className="card-author">
                         {user.name === conversation.author
                           ? "You posted"
@@ -167,19 +170,23 @@ const Conversation = () => {
                         <p className="card-thoughts">{conversation.thoughts}</p>
                       )}
                     </div>
+                    <br/>
                     <div className="card-bottom">
                       <div className="card-footer">
+                        {" "}
+                        <div className="comments-count">
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            className="comment-icon"
+                          />
+                          {likesCounts[conversation._id]}
+                        </div>
                         <div className="comments-count">
                           <FontAwesomeIcon
                             icon={faComment}
                             className="comment-icon"
                           />
                           {commentsCounts[conversation._id]}
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            className="comment-icon"
-                          />
-                          {likesCounts[conversation._id]}
                         </div>
                         {user.name === conversation.author && (
                           <div className="card-actions">

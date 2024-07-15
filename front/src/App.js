@@ -3,8 +3,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
-// import Home from "./pages/Home";
-import HomePage from "./pages/HomePage";
+ import Home from "./pages/Home";
+//import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
 import { ToastContainer } from "react-toastify";
@@ -27,7 +27,7 @@ axios.defaults.baseURL = "http://localhost:3001/CultureConnect/";
 axios.defaults.withCredentials = true;
 
 const router = createBrowserRouter([
-  { path: "/", element: <HomePage /> },
+  { path: "/", element: <Home /> },
   { path: "/register", element: <Register /> },
   { path: "/login", element: <Login /> },
   {

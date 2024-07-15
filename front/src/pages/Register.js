@@ -37,7 +37,6 @@ function Register() {
     "Orma",
     "Pokot",
     "Njemps",
-    "Sakuye",
     "Somali",
     "Galla",
     "Ndorobo",

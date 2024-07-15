@@ -8,7 +8,10 @@ import CustomMoment from "./customMoment";
 import "../assests/css/conversationDetails.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faRegularHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faHeart as faRegularHeart,
+  faComment,
+} from "@fortawesome/free-regular-svg-icons";
 import Icons from "./icons";
 
 function ConversationDetails() {
@@ -17,6 +20,7 @@ function ConversationDetails() {
   const [loading, setLoading] = useState(true);
   const [audio, setAudio] = useState(false);
   const { user } = useContext(UserContext);
+  const [commentsCount, setCommentsCount] = useState(0);
   const [likes, setLikes] = useState([]);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -26,10 +30,12 @@ function ConversationDetails() {
         const response = await axios.get(`conversation/${id}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-
         if (response.data.success) {
-          setConversation(response.data.conversation);
-          setAudio(!!response.data.conversation.audio);
+          const fetchedConversation = response.data.conversation;
+          console.log("Fetched conversation:", fetchedConversation); // Add this line for debugging
+
+          setConversation(fetchedConversation);
+          setAudio(!!fetchedConversation.audio);
         }
       } catch (err) {
         console.error("Error fetching conversation details:", err);
@@ -123,6 +129,10 @@ function ConversationDetails() {
     }
   };
 
+  const handleCommentsCountUpdate = (count) => {
+    setCommentsCount(count);
+  };
+
   return (
     <>
       <Navbar />
@@ -169,19 +179,40 @@ function ConversationDetails() {
                   </div>
                 ) : null}
                 {renderAudioPlayer()}
-                <button onClick={toggleFavourite}>
-                  {isLiked ? (
-                    <FontAwesomeIcon
-                      icon={faSolidHeart}
-                      style={{ color: "red" }}
-                    />
-                  ) : (
-                    <FontAwesomeIcon icon={faRegularHeart} />
-                  )}
-                </button>
+                <hr />
+                <br />
+                <div className="like-container">
+                  <button onClick={toggleFavourite} className="icon-button">
+                    {isLiked ? (
+                      <FontAwesomeIcon
+                        icon={faSolidHeart}
+                        className="icon"
+                        style={{ color: "red", fontSize: "40px" }}
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faRegularHeart}
+                        className="icon"
+                        style={{ color: "white", fontSize: "40px" }}
+                      />
+                    )}
+                  </button>{" "}
+                  <FontAwesomeIcon
+                    icon={faComment}
+                    className="icon"
+                    style={{ color: "white", fontSize: "40px" }}
+                  />
+                  {commentsCount}
+                </div>
+                <br />
+                <hr />
+                <br />
               </div>
               <div className="comments-section">
-                <Comments conversationId={id} />
+              <Comments
+                  conversationId={id}
+                  onCommentsCountUpdate={handleCommentsCountUpdate}
+                />
               </div>
             </>
           )}

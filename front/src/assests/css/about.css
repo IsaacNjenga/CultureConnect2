@@ -5,13 +5,12 @@ body {
   background-size: cover;
 }
 
-
 .about-container {
   background-color: #ab363600; /* Light background color */
   padding: 20px; /* Padding around the text */
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  max-width: 600px; /* Maximum width of the container */
+  box-shadow: 0 4px 8px rgba(182, 148, 148, 0.1); /* Soft shadow for depth */
+  max-width: 800px; /* Maximum width of the container */
   margin: 20px auto; /* Center the container with margin */
   font-family: "Arial", sans-serif; /* Font family */
   color: #ffffff; /* Text color */
@@ -20,6 +19,7 @@ body {
 
 .about-container p {
   margin: 0; /* Remove default margin */
-  font-size: 1.2rem; /* Increase font size */
+  font-size: 1rem; /* Increase font size */
   line-height: 1.6; /* Improve readability */
+  color: #ffffff; /* Text color */
 }

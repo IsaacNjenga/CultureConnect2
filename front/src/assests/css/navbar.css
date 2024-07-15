@@ -1,14 +1,13 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   padding: 12px;
-  background-color: rgba(0, 0, 0, 0.75); /* Semi-transparent black background */
+  background-color: rgba(104, 15, 15, 0.793);
   color: white;
   padding-inline: 45px;
 }
@@ -27,17 +26,30 @@
   font-size: 1.8rem;
   margin-right: 20px;
   text-decoration: none;
+  display: flex;
+  align-items: center;
   color: white;
-  font-family: 'Montserrat', sans-serif; /* Example font */
 }
 
 .navbar-link {
   color: white;
   text-decoration: none;
   margin-right: 20px;
-  font-family: 'Montserrat', sans-serif;
 }
 
 .navbar-link:hover {
+  color: aliceblue;
   text-decoration: underline;
 }
+
+.navbar-brand-container {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-icon {
+  width: 65px;
+  height: auto;
+  margin-right: 8px;
+}
+
