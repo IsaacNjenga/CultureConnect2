@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Logout from "./pages/Logout";
 import Dashboard from "./pages/Dashboard";
- import Home from "./pages/Home";
+import Home from "./pages/Home";
 //import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import UserProfile from "./pages/UserProfile";
@@ -20,6 +20,8 @@ import UpdateConversation from "./components/updateConversation";
 import MyConversations from "./components/myConversations";
 import Category from "./components/category";
 import ConversationDetails from "./components/conversationDetails";
+import AddProfile from "./components/addProfile";
+import UpdateProfile from "./components/updateProfile";
 
 export const UserContext = createContext(null);
 
@@ -38,10 +40,27 @@ const router = createBrowserRouter([
       </ProtectedRoutes>
     ),
   },
-  {path: "/profile",
+  {
+    path: "/profile",
     element: (
       <ProtectedRoutes>
         <UserProfile />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "add-profile",
+    element: (
+      <ProtectedRoutes>
+        <AddProfile />
+      </ProtectedRoutes>
+    ),
+  },
+  {
+    path: "update-profile/:id",
+    element: (
+      <ProtectedRoutes>
+        <UpdateProfile />
       </ProtectedRoutes>
     ),
   },
@@ -55,7 +74,6 @@ const router = createBrowserRouter([
   { path: "/about", element: <About /> },
   { path: "*", element: <NotFound /> },
 ]);
-
 function App() {
   const [user, setUser] = useState();
   const [isOnline, setIsOnline] = useState(false);

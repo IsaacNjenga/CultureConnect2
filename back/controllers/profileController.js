@@ -1,55 +1,63 @@
-import { UserModel } from "../models/User.js";
 import { ProfileModel } from "../models/profile.js";
-import path from "path";
-import fs from "fs";
 
-export const getProfile = async (req, res) => {
+const createProfile = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const user = await UserModel.findById(userId).select("-password"); // Exclude password field
+    const { firstname, lastname, gender, ethnicity, bio, email, username } =
+      req.body;
+    const newProfile = new ProfileModel({
+      firstname,
+      lastname,
+      gender,
+      ethnicity,
+      email,
+      username,
+      bio,
+      postedBy: req.user._id,
+    });
 
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    res.json({ success: true, user });
+    const result = await newProfile.save();
+    return res.status(201).json({ success: true, result });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Error saving profile:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
 
-export const updateProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
-    const userId = req.params.id;
-    const { bio } = req.body;
-    let profilePic = null;
+    const results = await ProfileModel.find({ postedBy: req.user._id });
 
-    if (req.files && req.files.profilePic) {
-      const profilePicFile = req.files.profilePic;
-      const uploadPath = path.join(__dirname, "..", "uploads", profilePicFile.name);
-      profilePic = `/uploads/${profilePicFile.name}`;
-
-      // Save the file
-      await profilePicFile.mv(uploadPath);
+    if (!results) {
+      return res.status(404).json({ error: "Profile not found" });
     }
 
-    const updateFields = { bio };
-    if (profilePic) {
-      updateFields.profilePic = profilePic;
-    }
-
-    const user = await UserModel.findByIdAndUpdate(userId, updateFields, {
-      new: true,
-    }).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    res.json({ success: true, user });
+    return res.status(200).json({
+      success: true,
+      results,
+    });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Server error" });
+    console.error("Error:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
+
+const updateProfile = async (req, res) => {
+  const { id } = req.params;
+  console.log("the id from req.params:", id);
+  try {
+    const result = await ProfileModel.findOneAndUpdate(
+      { postedBy: id },
+      { ...req.body },
+      { new: true }
+    );
+    if (!result) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+    return res.status(200).json({ success: true, result });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export { createProfile, updateProfile, getProfile };

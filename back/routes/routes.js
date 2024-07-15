@@ -27,6 +27,8 @@ import {
   deleteComment,
 } from "../controllers/commentsController.js";
 
+import { createProfile } from "../controllers/profileController.js";
+
 router.post(
   "/register",
   [
@@ -72,8 +74,9 @@ router.post(
 router.get("/verify", VerifyUser, Auth);
 
 //profile route
-router.get("/profile/:id", VerifyUser, getProfile);
-router.post("/profile/:id/update", VerifyUser, updateProfile);
+router.get("/profile", VerifyUser, getProfile);
+router.put("/profile-update/:id", VerifyUser, updateProfile);
+router.post("/create-profile", VerifyUser, createProfile);
 
 //conversation Routes
 router.post("/addConversation", VerifyUser, addConversation);

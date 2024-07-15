@@ -1,121 +1,91 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { UserContext } from "../App";
 import axios from "axios";
 import "../assests/css/userProfile.css";
+import { toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import defaultProfilePic from "../assests/css/defaultProfilePic.png";
+import { Link } from "react-router-dom";
+import AddProfile from "../components/addProfile";
 
 function UserProfile() {
   const { user } = useContext(UserContext);
-  const [profile, setProfile] = useState(null);
-  const [profilePic, setProfilePic] = useState(null);
+  const [values, setValues] = useState({
+    firstname: "",
+    lastname: "",
+    gender: "",
+    bio: "",
+    ethnicity: "",
+  });
+  const [image, setImage] = useState("");
   const [profilePicPreview, setProfilePicPreview] = useState(defaultProfilePic);
-  const [bio, setBio] = useState("");
-  const [ethnicity, setEthnicity] = useState("");
+  const [data, setData] = useState(false);
 
-  const tribesOfKenya = [
-    "Kikuyu",
-    "Luhya",
-    "Kalenjin",
-    "Luo",
-    "Kamba",
-    "Somali",
-    "Kisii",
-    "Mijikenda",
-    "Maasai",
-    "Taita",
-    "Embu",
-    "Meru",
-    "Taveta",
-    "Turkana",
-    "Teso",
-    "Ilchamus",
-    "Samburu",
-    "Rendille",
-    "Borana",
-    "Gabra",
-    "Orma",
-    "Pokot",
-    "Njemps",
-    "Sakuye",
-    "Somali",
-    "Galla",
-    "Ndorobo",
-    "Suba",
-    "Ogiek",
-    "El Molo",
-    "Kuria",
-    "Malakote",
-    "Swahili",
-    "Arabs",
-    "Waat",
-    "Nubians",
-    "Boni",
-    "Giriama",
-    "Digo",
-    "Taveta",
-    "Bajuni",
-    "Orma",
-    "Burji",
-    "Sakuye",
-  ];
+  const fetchProfile = useCallback(async () => {
+    try {
+      const response = await axios.get("profile", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
 
-  useEffect(() => {
-    if (user) {
-      axios
-        .get(`/profile/${user._id}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        })
-        .then((response) => {
-          setProfile(response.data.user);
-          setBio(response.data.user.bio);
-          setEthnicity(response.data.user.ethnicity);
-          if (response.data.user.image) {
-            setProfilePicPreview(response.data.user.image);
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching profile data", error);
+      const filteredProfile = response.data.results.find(
+        (profile) => profile.postedBy === user._id
+      );
+
+      if (filteredProfile) {
+        setData(true);
+      }
+
+      console.log(response.data.results);
+      if (filteredProfile) {
+        setValues({
+          firstname: filteredProfile.firstname,
+          lastname: filteredProfile.lastname,
+          gender: filteredProfile.gender,
+          bio: filteredProfile.bio,
+          ethnicity: filteredProfile.ethnicity,
         });
+        if (filteredProfile.image) {
+          setProfilePicPreview(filteredProfile.image);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching profile:", error);
+      toast.error("Error fetching profile data", { position: "top-right" });
     }
   }, [user]);
 
-  const handleBioChange = (e) => {
-    setBio(e.target.value);
-  };
-
-  const handleProfilePicChange = (e) => {
-    const file = e.target.files[0];
-    setProfilePic(file);
-    setProfilePicPreview(URL.createObjectURL(file));
-  };
-
-  const handleEthnicityChange = (e) => {
-    setEthnicity(e.target.value);
-  };
-
-  const handleSaveChanges = () => {
-    const formData = new FormData();
-    formData.append("bio", bio);
-    formData.append("ethnicity", ethnicity);
-    if (profilePic) {
-      formData.append("profilePic", profilePic);
+  useEffect(() => {
+    if (user) {
+      fetchProfile();
     }
+  }, [user, fetchProfile]);
 
-    axios
-      .post(`/profile/${user._id}/update`, formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        setProfile(response.data.user);
-        alert("Profile updated successfully");
-      })
-      .catch((error) => {
-        console.error("Error updating profile", error);
-      });
+  const handleChange = (e) => {
+    setValues((prevValues) => ({
+      ...prevValues,
+      [e.target.name]: e.target.value || e.target.id,
+    }));
+  };
+
+  const convertFileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    try {
+      const base64Image = await convertFileToBase64(file);
+      setImage(base64Image);
+      setProfilePicPreview(base64Image);
+    } catch (error) {
+      console.error("Error converting image file:", error);
+      toast.error("Error uploading image file", { position: "top-right" });
+    }
   };
 
   if (!user) {
@@ -125,9 +95,9 @@ function UserProfile() {
   return (
     <>
       <Navbar />
-      <div className="profile-container">
-        <h2 className="profile-heading">User Profile</h2>
-        {profile ? (
+      {data ? (
+        <div className="profile-container">
+          <h2 className="profile-heading">User Profile</h2>
           <div className="profile-details">
             <div className="profile-picture">
               <img
@@ -135,34 +105,78 @@ function UserProfile() {
                 alt="Profile"
                 className="profile-img"
               />
-              <input type="file" onChange={handleProfilePicChange} />
+              <input type="file" onChange={handleImageUpload} name="image" />
             </div>
-            <p>
-              <strong>Name:</strong> {profile.name}
-            </p>
-            <p>
-              <strong>Email:</strong> {profile.email}
-            </p>
+            <div>
+              <p>Username: {user.name}</p>
+              <p>E-mail: {user.email}</p>
+              <label htmlFor="firstname">First Name</label>
+              <input
+                type="text"
+                onChange={handleChange}
+                name="firstname"
+                value={values.firstname}
+                placeholder="Enter your first name"
+              />
+              <label htmlFor="lastname">Last Name</label>
+              <input
+                type="text"
+                onChange={handleChange}
+                name="lastname"
+                value={values.lastname}
+                placeholder="Enter your last name"
+              />
+              <div className="gender-options">
+                <div>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    id="male"
+                    checked={values.gender === "male"}
+                    onChange={handleChange}
+                    className="form-radio"
+                  />
+                  <label htmlFor="male" className="form-radio-label">
+                    Male
+                  </label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    id="female"
+                    checked={values.gender === "female"}
+                    onChange={handleChange}
+                    className="form-radio"
+                  />
+                  <label htmlFor="female" className="form-radio-label">
+                    Female
+                  </label>
+                </div>
+              </div>
+            </div>
+            <br />
             <div className="profile-ethnicity">
               <strong>Ethnicity:</strong>
-              <select value={ethnicity} onChange={handleEthnicityChange}>
-                {tribesOfKenya.map((tribe) => (
-                  <option key={tribe} value={tribe}>
-                    {tribe}
-                  </option>
-                ))}
-              </select>
+              <input
+                type="text"
+                name="ethnicity"
+                value={values.ethnicity}
+                onChange={handleChange}
+              />
             </div>
             <div className="profile-bio">
               <strong>Bio:</strong>
-              <textarea value={bio} onChange={handleBioChange} />
+              <textarea name="bio" onChange={handleChange} value={values.bio} />
             </div>
-            <button onClick={handleSaveChanges}>Save Changes</button>
+            <Link to={`/update-profile/${user._id}`}>Edit your profile</Link>
           </div>
-        ) : (
-          <p>Loading profile...</p>
-        )}
-      </div>
+        </div>
+      ) : (
+        <AddProfile />
+      )}
     </>
   );
 }

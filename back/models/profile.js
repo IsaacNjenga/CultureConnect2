@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
 const ProfileSchema = new mongoose.Schema({
-  name: { required: true, type: String },
-  email: { required: true, type: String },
-  enthnicity: { required: true, type: String },
+  username: { type: String },
+  email: { type: String },
+  firstname: { type: String },
+  lastname: { type: String },
+  gender: { type: String },
+  ethnicity: { type: String },
   bio: { type: String },
   image: { type: String },
+  postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 });
 
 const ProfileModel = new mongoose.model("profile", ProfileSchema);
