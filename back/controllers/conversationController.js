@@ -49,11 +49,12 @@ const getConversation = async (req, res) => {
         thoughts: conversation.thoughts,
         author: conversation.author,
         audio: conversation.audio,
-        createdAt:conversation.createdAt
+        createdAt: conversation.createdAt,
+        postedBy: conversation.postedBy,
       },
     });
   } catch (error) {
-    console.error("Error fetching contact:", error);
+    console.error("Error fetching conversation:", error);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -102,11 +103,10 @@ const updateConversation = async (req, res) => {
 
 //fetching a comment
 
-
 export {
   addConversation,
   getConversations,
   getConversation,
   deleteConversation,
-  updateConversation
+  updateConversation,
 };

@@ -8,6 +8,7 @@ const ConversationSchema = new mongoose.Schema(
     image: { type: String },
     author: { type: String, require: true },
     audio: { type: String },
+    postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
     createdAt: { type: Date, default: Date.now },
   },
   {

@@ -22,6 +22,7 @@ import Category from "./components/category";
 import ConversationDetails from "./components/conversationDetails";
 import AddProfile from "./components/addProfile";
 import UpdateProfile from "./components/updateProfile";
+import UserDetails from "./components/userDetails";
 
 export const UserContext = createContext(null);
 
@@ -69,6 +70,7 @@ const router = createBrowserRouter([
   { path: "/update-conversation/:id", element: <UpdateConversation /> },
   { path: "/my-conversations", element: <MyConversations /> },
   { path: "/category/:category", element: <Category /> },
+  { path: "/user/:id", element: <UserDetails /> },
   { path: "/conversation/:id", element: <ConversationDetails /> },
   { path: "/logout", element: <Logout /> },
   { path: "/about", element: <About /> },

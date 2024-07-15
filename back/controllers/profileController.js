@@ -60,4 +60,32 @@ const updateProfile = async (req, res) => {
   }
 };
 
-export { createProfile, updateProfile, getProfile };
+const getUserProfile = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ error: "No ID specified" });
+  }
+  try {
+    const profile = await ProfileModel.findOne({ postedBy: id });
+    if (!profile) {
+      return res.status(404).json({ error: "Profile does not exist" });
+    }
+    return res.status(200).json({
+      success: true,
+      profile: {
+        firstname: profile.firstname,
+        lastname: profile.lastname,
+        gender: profile.gender,
+        bio: profile.bio,
+        ethnicity: profile.ethnicity,
+        email: profile.email,
+        username: profile.username,
+      },
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+export { createProfile, updateProfile, getProfile, getUserProfile };

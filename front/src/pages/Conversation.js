@@ -154,10 +154,18 @@ const Conversation = () => {
                       </h3>
 
                       <p className="card-author">
-                        {user.name === conversation.author
-                          ? "You posted"
-                          : `Posted by ${conversation.author}`}
+                        {user.name === conversation.author ? (
+                          "You posted"
+                        ) : (
+                          <>
+                            Posted by{" "}
+                            <Link to={`/user/${conversation.postedBy}`}>
+                              {conversation.author}
+                            </Link>
+                          </>
+                        )}
                       </p>
+
                       {conversation.image ? (
                         <div className="conversation-image-container">
                           <img
@@ -170,7 +178,7 @@ const Conversation = () => {
                         <p className="card-thoughts">{conversation.thoughts}</p>
                       )}
                     </div>
-                    <br/>
+                    <br />
                     <div className="card-bottom">
                       <div className="card-footer">
                         {" "}

@@ -1,6 +1,5 @@
 import express from "express";
 import { Register, Login, Auth } from "../controllers/userController.js";
-import { getProfile, updateProfile } from "../controllers/profileController.js";
 const router = express.Router();
 import { body } from "express-validator";
 import { VerifyUser } from "../middleware/verifyUser.js";
@@ -27,7 +26,12 @@ import {
   deleteComment,
 } from "../controllers/commentsController.js";
 
-import { createProfile } from "../controllers/profileController.js";
+import {
+  createProfile,
+  getProfile,
+  updateProfile,
+  getUserProfile,
+} from "../controllers/profileController.js";
 
 router.post(
   "/register",
@@ -77,6 +81,7 @@ router.get("/verify", VerifyUser, Auth);
 router.get("/profile", VerifyUser, getProfile);
 router.put("/profile-update/:id", VerifyUser, updateProfile);
 router.post("/create-profile", VerifyUser, createProfile);
+router.get("/profile/:id", VerifyUser, getUserProfile);
 
 //conversation Routes
 router.post("/addConversation", VerifyUser, addConversation);
