@@ -26,8 +26,10 @@ import UserDetails from "./components/userDetails";
 
 export const UserContext = createContext(null);
 
-axios.defaults.baseURL = "http://localhost:3001/CultureConnect/";
+axios.defaults.baseURL = "https://culture-connect2.vercel.app/CultureConnect/";
 axios.defaults.withCredentials = true;
+
+//http://localhost:3001/CultureConnect/
 
 const router = createBrowserRouter([
   { path: "/", element: <Home /> },

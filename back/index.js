@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fileUpload from "express-fileupload";
 import "./config/db.js";
 import { Router } from "./routes/routes.js";
 import bodyParser from "body-parser";
@@ -10,7 +9,7 @@ dotenv.config({ path: "./config/.env" });
 const app = express();
 app.use(bodyParser.json({ limit: "10mb" }));
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: ["http://localhost:3000","https://culture-connect2-front.vercel.app"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -34,7 +33,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(fileUpload());
 app.use("/uploads", express.static("uploads"));
 app.use("/CultureConnect", Router);
 
