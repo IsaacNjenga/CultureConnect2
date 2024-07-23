@@ -36,9 +36,10 @@ function UserProfile() {
 
       if (filteredProfile) {
         setData(true);
+      } else {
+        setLoading(false);
       }
 
-      console.log(response.data.results);
       if (filteredProfile) {
         setLoading(false);
         setValues({

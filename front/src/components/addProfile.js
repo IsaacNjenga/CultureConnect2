@@ -65,7 +65,6 @@ function AddProfile() {
   const handleSubmit = (e) => {
     setLoading(true);
     e.preventDefault();
-    console.log(values);
     const valuesData = {
       ...values,
       image: image,
