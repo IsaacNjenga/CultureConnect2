@@ -10,7 +10,7 @@ dotenv.config({ path: "./config/.env" });
 const app = express();
 app.use(bodyParser.json({ limit: "10mb" }));
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -19,6 +19,21 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// Handle CORS preflight requests
+app.use((req, res, next) => {
+  console.log("Request Method:", req.method);
+  console.log("Request Headers:", req.headers);
+  if (req.method === "OPTIONS") {
+    res.header("Access-Control-Allow-Origin", req.headers.origin);
+    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.header("Access-Control-Allow-Credentials", "true");
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 app.use(fileUpload());
 app.use("/uploads", express.static("uploads"));
 app.use("/CultureConnect", Router);
