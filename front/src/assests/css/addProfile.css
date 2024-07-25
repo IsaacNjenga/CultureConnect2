@@ -1,0 +1,130 @@
+.profile-container {
+    padding: 20px;
+    max-width: 650px;
+    margin: 0 auto;
+    background-color: #f9f9f9c2;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-heading {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .profile-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-picture {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border: 2px solid #ddd;
+  }
+  
+  .profile-info {
+    width: 100%;
+    padding: 0 20px;
+  }
+  
+  .profile-info p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #151515;
+  }
+  
+  .profile-input {
+    margin-bottom: 15px;
+  }
+  
+  .profile-input label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #131212;
+  }
+  
+  .profile-input input,
+  .profile-bio textarea {
+    width: 90%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1em;
+  }
+  
+  .profile-bio {
+    margin-bottom: 20px;
+  }
+  
+  .profile-bio label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #000000;
+  }
+  
+  .profile-bio textarea {
+    height: 100px;
+    resize: none;
+  }
+  
+  .gender-options {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    width: 30%;
+  }
+  
+  .gender-options div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .form-radio {
+    margin-right: 5px;
+  }
+  
+  .form-radio-label {
+    font-size: 1em;
+    color: #555;
+  }
+  
+  .edit-profile-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+  }
+  
+  .edit-profile-link:hover {
+    background-color: #0056b3;
+  }
+  
+  .profile-select {
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+  }
+  
